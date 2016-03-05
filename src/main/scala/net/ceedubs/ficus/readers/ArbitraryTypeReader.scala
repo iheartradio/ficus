@@ -4,6 +4,7 @@ import net.ceedubs.ficus.util.ReflectionUtils
 import com.typesafe.config.Config
 import scala.language.experimental.macros
 import scala.reflect.internal.{StdNames, SymbolTable, Definitions}
+import com.google.common.base.CaseFormat
 
 trait ArbitraryTypeReader {
   implicit def arbitraryTypeValueReader[T]: ValueReader[T] = macro ArbitraryTypeReaderMacros.arbitraryTypeValueReader[T]
@@ -11,22 +12,48 @@ trait ArbitraryTypeReader {
 
 object ArbitraryTypeReader extends ArbitraryTypeReader
 
+trait HyphenCaseArbitraryTypeReader {
+  implicit def arbitraryTypeValueReader[T]: ValueReader[T] = macro ArbitraryTypeReaderMacros.arbitraryTypeValueReaderWithHyphenCase[T]
+}
+
+object HyphenCaseArbitraryTypeReader extends HyphenCaseArbitraryTypeReader
+
 object ArbitraryTypeReaderMacros {
   import scala.reflect.macros.blackbox.Context
 
-  def arbitraryTypeValueReader[T : c.WeakTypeTag](c: Context): c.Expr[ValueReader[T]] = {
+  trait NameMapper {
+    def map(name: String): String
+  }
+
+  object defaultMapper extends NameMapper {
+    def map(name: String) = name
+  }
+
+  object hyphenCaseMapper extends NameMapper {
+    def map(name: String) = CaseFormat.LOWER_CAMEL.to(CaseFormat.LOWER_HYPHEN, name)
+  }
+
+  def arbitraryTypeValueReaderWithParamMapper[T : c.WeakTypeTag](c: Context, paramMapper: NameMapper): c.Expr[ValueReader[T]] = {
     import c.universe._
 
     reify {
       new ValueReader[T] {
-        def read(config: Config, path: String): T = instantiateFromConfig[T](c)(
+        def read(config: Config, path: String): T = instantiateFromConfig[T](c, paramMapper)(
           config = c.Expr[Config](Ident(TermName("config"))),
           path = c.Expr[String](Ident(TermName("path")))).splice
       }
     }
   }
 
-  def instantiateFromConfig[T : c.WeakTypeTag](c: Context)(config: c.Expr[Config], path: c.Expr[String]): c.Expr[T] = {
+  def arbitraryTypeValueReader[T : c.WeakTypeTag](c: Context): c.Expr[ValueReader[T]] = {
+    arbitraryTypeValueReaderWithParamMapper(c, defaultMapper)
+  }
+
+  def arbitraryTypeValueReaderWithHyphenCase[T : c.WeakTypeTag](c: Context): c.Expr[ValueReader[T]] = {
+    arbitraryTypeValueReaderWithParamMapper(c, hyphenCaseMapper)
+  }
+
+  def instantiateFromConfig[T : c.WeakTypeTag](c: Context, paramMapper: NameMapper)(config: c.Expr[Config], path: c.Expr[String]): c.Expr[T] = {
     import c.universe._
 
     val returnType = c.weakTypeOf[T]
@@ -40,7 +67,7 @@ object ArbitraryTypeReaderMacros {
 
     val instantiationMethod = ReflectionUtils.instantiationMethod[T](c, fail)
 
-    val instantiationArgs = extractMethodArgsFromConfig[T](c)(method = instantiationMethod,
+    val instantiationArgs = extractMethodArgsFromConfig[T](c, paramMapper)(method = instantiationMethod,
       companionObjectMaybe = companionSymbol, config = config, path = path, fail = fail)
     val instantiationObject = companionSymbol.filterNot(_ =>
       instantiationMethod.isConstructor
@@ -49,7 +76,7 @@ object ArbitraryTypeReaderMacros {
     c.Expr[T](Apply(instantiationCall, instantiationArgs))
   }
 
-  def extractMethodArgsFromConfig[T : c.WeakTypeTag](c: Context)(method: c.universe.MethodSymbol, companionObjectMaybe: Option[c.Symbol],
+  def extractMethodArgsFromConfig[T : c.WeakTypeTag](c: Context, paramMapper: NameMapper)(method: c.universe.MethodSymbol, companionObjectMaybe: Option[c.Symbol],
                                               config: c.Expr[Config], path: c.Expr[String], fail: String => Nothing): List[c.Tree] = {
     import c.universe._
 
@@ -58,7 +85,7 @@ object ArbitraryTypeReaderMacros {
     if (!method.isPublic) fail(s"'$decodedMethodName' method is not public")
 
     method.paramLists.head.zipWithIndex map { case (param, index) =>
-      val name = param.name.decodedName.toString
+      val name = paramMapper.map(param.name.decodedName.toString)
       val key = q"""$path + "." + $name"""
       val returnType: Type = param.typeSignatureIn(c.weakTypeOf[T])
 

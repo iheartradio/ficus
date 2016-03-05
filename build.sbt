@@ -5,6 +5,9 @@ description := "A Scala-friendly wrapper companion for Typesafe config"
 
 startYear := Some(2013)
 
+licenses := Seq(
+  "MIT License" -> url("http://www.opensource.org/licenses/mit-license.html")
+)
 
 /* scala versions and options */
 scalaVersion := "2.11.7"
@@ -32,7 +35,7 @@ scalacOptions <++= scalaVersion map { sv =>
     "-language:implicitConversions",
     "-language:higherKinds"
   )
-  else 
+  else
     List("-target:jvm-1.8")
 }
 
@@ -45,6 +48,7 @@ libraryDependencies <++= scalaVersion { sv =>
     "org.scalacheck" %% "scalacheck"     % "1.11.3"   % "test",
     "com.chuusai"    %% "shapeless"      % "2.0.0"    % "test",
     "com.typesafe"   %  "config"         % "1.3.0",
+    "com.google.guava" %  "guava"         % "18.0",
     "org.scala-lang" %  "scala-reflect"  % sv         % "provided")
 }
 
@@ -70,5 +74,4 @@ mappings in (Compile, packageBin) ~= { (ms: Seq[(File, String)]) =>
 }
 
 Publish.settings
-
 
