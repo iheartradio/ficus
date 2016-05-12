@@ -2,6 +2,7 @@ package net.ceedubs.ficus
 
 import com.typesafe.config.Config
 import net.ceedubs.ficus.readers.{AllValueReaderInstances, ValueReader}
+import scala.language.implicitConversions
 
 trait FicusConfig {
   def config: Config

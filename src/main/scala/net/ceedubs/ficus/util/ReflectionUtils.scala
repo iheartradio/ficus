@@ -1,10 +1,15 @@
 package net.ceedubs.ficus.util
 
-import scala.reflect.macros.blackbox.Context
+import macrocompat.bundle
+import scala.reflect.macros.blackbox
 
-object ReflectionUtils {
-  def instantiationMethod[T : c.WeakTypeTag](c: Context, fail: String => Nothing): c.universe.MethodSymbol = {
-    import c.universe._
+@bundle
+trait ReflectionUtils {
+  val c: blackbox.Context
+
+  import c.universe._
+
+  def instantiationMethod[T : c.WeakTypeTag](fail: String => Nothing): c.universe.MethodSymbol = {
 
     val returnType = c.weakTypeOf[T]
 

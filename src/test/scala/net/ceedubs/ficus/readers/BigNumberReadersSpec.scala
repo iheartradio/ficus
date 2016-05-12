@@ -2,7 +2,6 @@ package net.ceedubs.ficus.readers
 
 import com.typesafe.config.ConfigFactory
 import net.ceedubs.ficus.Spec
-import org.specs2.specification.core.Fragments
 
 class BigNumberReadersSpec extends Spec with BigNumberReaders { def is = s2"""
   The BigDecimal value reader should
@@ -37,7 +36,7 @@ class BigNumberReadersSpec extends Spec with BigNumberReaders { def is = s2"""
     bigDecimalReader.read(cfg,"myValue") must beEqualTo(BigDecimal(i))
   }
   
-  def readBigDecimal = prop{ b: BigDecimal => 
+  def readBigDecimal = prop{ b: BigDecimal =>
     scala.util.Try(BigDecimal(b.toString)).toOption.isDefined ==> {
       val cfg = ConfigFactory.parseString(s"myValue = $b")
       bigDecimalReader.read(cfg, "myValue") must beEqualTo(b)

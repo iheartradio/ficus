@@ -3,7 +3,8 @@ package net.ceedubs.ficus.readers
 import com.typesafe.config.{ConfigUtil, Config}
 import collection.JavaConverters._
 import collection.generic.CanBuildFrom
-import scala.reflect.ClassTag
+import scala.language.postfixOps
+import scala.language.higherKinds
 
 trait CollectionReaders {
 

@@ -1,5 +1,7 @@
 package net.ceedubs.ficus.readers
 
+import java.math.MathContext
+
 import com.typesafe.config.{ConfigException, Config}
 
 trait BigNumberReaders {

@@ -4,6 +4,8 @@ import net.ceedubs.ficus.util.ReflectionUtils
 import com.typesafe.config.Config
 import scala.language.experimental.macros
 import scala.reflect.internal.{StdNames, SymbolTable, Definitions}
+import macrocompat.bundle
+import scala.reflect.macros.blackbox
 
 trait ArbitraryTypeReader {
   implicit def arbitraryTypeValueReader[T]: ValueReader[T] = macro ArbitraryTypeReaderMacros.arbitraryTypeValueReader[T]
@@ -11,24 +13,21 @@ trait ArbitraryTypeReader {
 
 object ArbitraryTypeReader extends ArbitraryTypeReader
 
-object ArbitraryTypeReaderMacros {
-  import scala.reflect.macros.blackbox.Context
+@bundle
+class ArbitraryTypeReaderMacros(val c: blackbox.Context) extends ReflectionUtils {
+  import c.universe._
 
-  def arbitraryTypeValueReader[T : c.WeakTypeTag](c: Context): c.Expr[ValueReader[T]] = {
-    import c.universe._
-
+  def arbitraryTypeValueReader[T : c.WeakTypeTag]: c.Expr[ValueReader[T]] = {
     reify {
       new ValueReader[T] {
-        def read(config: Config, path: String): T = instantiateFromConfig[T](c)(
+        def read(config: Config, path: String): T = instantiateFromConfig[T](
           config = c.Expr[Config](Ident(TermName("config"))),
           path = c.Expr[String](Ident(TermName("path")))).splice
       }
     }
   }
 
-  def instantiateFromConfig[T : c.WeakTypeTag](c: Context)(config: c.Expr[Config], path: c.Expr[String]): c.Expr[T] = {
-    import c.universe._
-
+  def instantiateFromConfig[T : c.WeakTypeTag](config: c.Expr[Config], path: c.Expr[String]): c.Expr[T] = {
     val returnType = c.weakTypeOf[T]
 
     def fail(reason: String) = c.abort(c.enclosingPosition, s"Cannot generate a config value reader for type $returnType, because $reason")
@@ -38,21 +37,21 @@ object ArbitraryTypeReaderMacros {
       case x => Some(x)
     }
 
-    val instantiationMethod = ReflectionUtils.instantiationMethod[T](c, fail)
+    val initMethod = instantiationMethod[T](fail)
 
-    val instantiationArgs = extractMethodArgsFromConfig[T](c)(method = instantiationMethod,
-      companionObjectMaybe = companionSymbol, config = config, path = path, fail = fail)
+    val instantiationArgs = extractMethodArgsFromConfig[T](
+      method = initMethod,
+      companionObjectMaybe = companionSymbol, config = config, path = path, fail = fail
+    )
     val instantiationObject = companionSymbol.filterNot(_ =>
-      instantiationMethod.isConstructor
+      initMethod.isConstructor
     ).map(Ident(_)).getOrElse(New(Ident(returnType.typeSymbol)))
-    val instantiationCall = Select(instantiationObject, instantiationMethod.name)
+    val instantiationCall = Select(instantiationObject, initMethod.name)
     c.Expr[T](Apply(instantiationCall, instantiationArgs))
   }
 
-  def extractMethodArgsFromConfig[T : c.WeakTypeTag](c: Context)(method: c.universe.MethodSymbol, companionObjectMaybe: Option[c.Symbol],
+  def extractMethodArgsFromConfig[T : c.WeakTypeTag](method: c.universe.MethodSymbol, companionObjectMaybe: Option[c.Symbol],
                                               config: c.Expr[Config], path: c.Expr[String], fail: String => Nothing): List[c.Tree] = {
-    import c.universe._
-
     val decodedMethodName = method.name.decodedName.toString
 
     if (!method.isPublic) fail(s"'$decodedMethodName' method is not public")
@@ -73,7 +72,7 @@ object ArbitraryTypeReaderMacros {
         Apply(Select(argValueMaybe, TermName("getOrElse")), List({
           // fall back to default value for param
           val u = c.universe.asInstanceOf[Definitions with SymbolTable with StdNames]
-          val getter = u.nme.defaultGetterName(u.TermName(decodedMethodName), index + 1)
+          val getter = u.nme.defaultGetterName(u.newTermName(decodedMethodName), index + 1)
           Select(Ident(companionObject), TermName(getter.encoded))
         }))
       } getOrElse {

@@ -8,6 +8,7 @@ import ConfigSerializerOps._
 import org.scalacheck.util.Buildable
 import org.scalacheck.Arbitrary
 import CollectionReaderSpec._
+import scala.language.higherKinds
 
 class CollectionReadersSpec extends Spec with CollectionReaders { def is = s2"""
   The collection value readers should
