@@ -66,4 +66,5 @@ mappings in (Compile, packageBin) := {
 
 Publish.settings
 
+releaseCrossBuild := true
 
