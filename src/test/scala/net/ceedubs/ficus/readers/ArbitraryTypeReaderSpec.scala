@@ -23,6 +23,7 @@ class ArbitraryTypeReaderSpec extends Spec { def is = s2"""
     allow overriding of option reader for default values $overrideOptionReaderForDefault
     not choose between multiple Java constructors $notChooseBetweenJavaConstructors
     not be prioritized over a Reader defined in a type's companion object (when Ficus._ is imported) $notTrumpCompanionReader
+    use name mapper $useNameMapper
   """
 
   import ArbitraryTypeReaderSpec._
@@ -157,6 +158,18 @@ class ArbitraryTypeReaderSpec extends Spec { def is = s2"""
     import Ficus._
     val cfg = ConfigFactory.parseString("""withReaderInCompanion { foo = "bar" }""")
     WithReaderInCompanion("from-companion") ==== cfg.as[WithReaderInCompanion]("withReaderInCompanion")
+  }
+
+  def useNameMapper = prop { foo: String =>
+    import Ficus.stringValueReader
+    import ArbitraryTypeReader._
+    implicit val nameMapper = new NameMapper {
+      override def map(name: String): String = name.toUpperCase
+    }
+
+    val cfg = ConfigFactory.parseString(s"singleParam { FOO = ${foo.asConfigValue} }")
+    val instance: ClassWithSingleParam = arbitraryTypeValueReader[ClassWithSingleParam].read(cfg, "singleParam")
+    instance.getFoo must_== foo
   }
 }
 
