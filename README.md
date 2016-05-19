@@ -157,3 +157,9 @@ When you call `as[String]("somePath")`, Ficus config knows how to extract a Stri
 Many thanks to all of [those who have contributed](https://github.com/iheartradio/ficus/blob/master/CONTRIBUTORS.md) to Ficus.
 
 Would you like to contribute to Ficus? Pull requests are welcome and encouraged! Please note that contributions will be under the [MIT license](https://github.com/iheartradio/ficus/blob/master/LICENSE). Please provide unit tests along with code contributions.
+
+
+
+## Binary Compatibility
+
+[MiMa](https://github.com/typesafehub/migration-manager) can be used to check the binary compatibility between two versions of a library.T To check for binary incompatibilities, run `mimaReportBinaryIssues` in the sbt repl. The build is configured to compare the current version against the last released version (It does this naïvely at the moment by merely decrementing bugfix version). If any binary compatibility issues are detected, you may wish to adjust your code to maintain binary compatibility, if that is the goal, or modify the minor version to indicate to consumers that the new version should not be considered binary compatible.

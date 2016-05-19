@@ -1,3 +1,5 @@
+import sbtrelease.Version
+
 /* basic project info */
 name := "ficus"
 
@@ -67,4 +69,12 @@ mappings in (Compile, packageBin) := {
 Publish.settings
 
 releaseCrossBuild := true
+
+mimaPreviousArtifacts := (if (scalaBinaryVersion.value != "2.10") {
+  Version(version.value).map {
+    case Version(major, subversions, _) =>
+      val (minor :: bugfix :: _) = subversions.toList
+      Set(organization.value %% name.value % Seq(major, minor, bugfix - 1).mkString("."))
+  }.getOrElse(Set.empty)
+} else Set.empty)
 
