@@ -1,7 +1,8 @@
 package net.ceedubs.ficus
 
-import com.typesafe.config.ConfigFactory
+import com.typesafe.config.{Config, ConfigFactory}
 import Ficus.{ booleanValueReader, optionValueReader, stringValueReader, toFicusConfig }
+import net.ceedubs.ficus.readers.ValueReader
 
 class FicusConfigSpec extends Spec { def is = s2"""
   A Ficus config should
@@ -9,6 +10,9 @@ class FicusConfigSpec extends Spec { def is = s2"""
     read a value with a value reader $readAValue
     get an existing value as a Some $getAsSome
     get a missing value as a None $getAsNone
+    getOrElse an existing value as asked type $getOrElseFromConfig
+    getOrElse a missing value with default value $getOrElseFromDefault
+    getOrElse an existing value as asked type with customer reader $getOrElseFromConfigWithCustomValueReader
     accept a CongigKey and return the appropriate type $acceptAConfigKey
   """
 
@@ -32,17 +36,29 @@ class FicusConfigSpec extends Spec { def is = s2"""
     cfg.getAs[Boolean]("nonValue") must beNone
   }
 
-  def getFromConfig = {
+  def getOrElseFromConfig = {
     val configString = "arealstring"
     val cfg = ConfigFactory.parseString(s"myValue = $configString")
     cfg.getOrElse("myValue", "notarealstring") must beEqualTo(configString)
   }
 
-  def getFromDefault = {
+  def getOrElseFromDefault = {
     val cfg = ConfigFactory.parseString("myValue = arealstring")
     val default = "adefaultstring"
     cfg.getOrElse("nonValue", default) must beEqualTo(default)
   }
+
+  def getOrElseFromConfigWithCustomValueReader = {
+    val cfg = ConfigFactory.parseString("myValue = 124")
+    val default = 23.toByte
+
+    implicit val byteReader = new ValueReader[Byte]{
+      def read(config: Config, path: String): Byte = config.getInt(path).toByte
+    }
+
+    cfg.getOrElse("myValue", default) must beEqualTo(124.toByte)
+  }
+
 
   def acceptAConfigKey = prop { b: Boolean =>
     val cfg = ConfigFactory.parseString(s"myValue = $b")
