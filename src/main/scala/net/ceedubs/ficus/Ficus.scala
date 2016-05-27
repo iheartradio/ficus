@@ -4,7 +4,7 @@ import com.typesafe.config.Config
 import net.ceedubs.ficus.readers._
 import scala.language.implicitConversions
 
-trait FicusInstances extends AnyValReaders with StringReader with OptionReader
+trait FicusInstances extends AnyValReaders with StringReader with SymbolReader with OptionReader
     with CollectionReaders with ConfigReader with DurationReaders
     with TryReader with ConfigValueReader with BigNumberReaders
     with ISOZonedDateTimeReader
