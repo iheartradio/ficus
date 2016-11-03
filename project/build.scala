@@ -3,8 +3,6 @@ import Keys._
 
 object build extends Build {
 
-  val gcsettings = Defaults.defaultSettings
-
   val gc = TaskKey[Unit]("gc", "runs garbage collector")
   val gcTask = gc := {
     println("requesting garbage collection")
@@ -13,7 +11,8 @@ object build extends Build {
 
   lazy val project = Project (
     "project",
-    file("."),
-    settings = gcsettings ++ Seq(gcTask)
+    file(".")
+  ).settings(
+    gcTask
   )
 }
