@@ -16,6 +16,5 @@ cache:
 install: /bin/true
 
 script:
-  - sbt ++$TRAVIS_SCALA_VERSION -jvm-opts travis-jvmopts clean coverage test
-  - sbt coverageReport
-  - sbt codacyCoverage
+  - sbt ++$TRAVIS_SCALA_VERSION -jvm-opts travis-jvmopts clean coverage test coverageReport
+  - sbt coveralls
