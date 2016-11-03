@@ -10,7 +10,7 @@ startYear := Some(2013)
 /* scala versions and options */
 scalaVersion := "2.11.8"
 
-crossScalaVersions := Seq(scalaVersion.value, "2.10.6")
+crossScalaVersions := Seq(scalaVersion.value, "2.10.6", "2.12.0")
 
 // These options will be used for *all* versions.
 scalacOptions ++= Seq(
@@ -18,14 +18,12 @@ scalacOptions ++= Seq(
   "-deprecation",
   "-unchecked",
   "-encoding", "UTF-8",
-  "-Yclosure-elim",
-  "-Yinline",
   "-target:jvm-1." + {
     CrossVersion.partialVersion(scalaVersion.value).collect {
       case (2, minor) if minor <= 10 => "7"
     }.getOrElse("8")
   }
-)
+) ++ (if (scalaVersion.value.startsWith("2.11") || scalaVersion.value.startsWith("2.10")) Seq("-Yclosure-elim", "-Yinline") else Seq.empty[String])
 
 javacOptions ++= Seq(
   "-Xlint:unchecked", "-Xlint:deprecation"
@@ -33,11 +31,11 @@ javacOptions ++= Seq(
 
 /* dependencies */
 libraryDependencies ++= Seq(
-  "org.specs2"     %% "specs2-core"       % "3.7.2"  % "test",
-  "org.specs2"     %% "specs2-scalacheck" % "3.7.2"  % "test",
-  "org.scalacheck" %% "scalacheck"        % "1.13.0" % "test",
-  "com.chuusai"    %% "shapeless"         % "2.3.0"  % "test",
-  "com.typesafe"   %  "config"            % "1.3.0",
+  "org.specs2"     %% "specs2-core"       % "3.8.6"  % "test",
+  "org.specs2"     %% "specs2-scalacheck" % "3.8.6"  % "test",
+  "org.scalacheck" %% "scalacheck"        % "1.13.4" % "test",
+  "com.chuusai"    %% "shapeless"         % "2.3.2"  % "test",
+  "com.typesafe"   %  "config"            % "1.3.1",
   "org.scala-lang" %  "scala-reflect"     % scalaVersion.value % "provided",
   "org.scala-lang" % "scala-compiler"     % scalaVersion.value % "provided",
   "org.typelevel"  %% "macro-compat"      % "1.1.1",
