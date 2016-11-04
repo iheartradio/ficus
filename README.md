@@ -7,8 +7,9 @@ Ficus adds an `as[A]` method to a normal [Typesafe Config](http://typesafehub.gi
 
 [![Build Status](https://secure.travis-ci.org/iheartradio/ficus.png?branch=master)](http://travis-ci.org/iheartradio/ficus)
 [![Join the chat at https://gitter.im/iheartradio/ficus](https://badges.gitter.im/iheartradio/ficus.svg)](https://gitter.im/iheartradio/ficus?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
-[![Codacy Badge](https://api.codacy.com/project/badge/grade/22a1e2928d2d48a1b9301a8a15ce666b)](https://www.codacy.com/app/kailuo-wang/ficus)
-[![Codacy Badge](https://api.codacy.com/project/badge/coverage/22a1e2928d2d48a1b9301a8a15ce666b)](https://www.codacy.com/app/kailuo-wang/ficus)
+[![Coverage Status](https://coveralls.io/repos/github/iheartradio/ficus/badge.svg?branch=master)](https://coveralls.io/github/iheartradio/ficus?branch=master)
+
+
 # Examples #
 ```scala
 import net.ceedubs.ficus.Ficus._
