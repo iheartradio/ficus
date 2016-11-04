@@ -44,12 +44,10 @@ libraryDependencies ++= Seq(
   compilerPlugin("org.scalamacros" % "paradise" % "2.1.0" cross CrossVersion.full)
 )
 
-/* you may need these repos */
 resolvers ++= Seq(
   Resolver.sonatypeRepo("snapshots")
 )
 
-/* testing */
 parallelExecution in Test := true
 
 /* sbt behavior */
