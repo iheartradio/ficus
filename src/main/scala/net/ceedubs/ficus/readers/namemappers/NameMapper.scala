@@ -19,6 +19,7 @@ trait NameMapper {
   */
 object NameMapper {
 
+
   /**
     * Gets the name mapper from the implicit scope
     * @param nameMapper The name mapper from the implicit scope, or the default name mapper if not found
