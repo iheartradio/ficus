@@ -69,16 +69,16 @@ libraryDependencies += "com.iheart" %% "ficus" % "1.0.2"
 // for Scala 2.11.x and Java 7
 libraryDependencies += "com.iheart" %% "ficus" % "1.1.3"
 
-// for Scala 2.11.x and Java 8
+// for Scala 2.11.x, 2.12.x and Java 8
 // See the latest version in the download badge below.
-libraryDependencies += "com.iheart" %% "ficus" % "1.2.3"
+libraryDependencies += "com.iheart" %% "ficus" % "1.3.2"
 ```
 
 [ ![Download](https://api.bintray.com/packages/iheartradio/maven/ficus/images/download.svg) ](https://bintray.com/iheartradio/maven/ficus/_latestVersion)
 
 If you want to take advantage of Ficus's ability to automatically hydrate arbitrary traits and classes from configuration, you need to be on Scala version 2.10.2 or higer, because this functionality depends on implicit macros.
 
-Release notes are available on the [Ficus wiki](https://github.com/iheartradio/ficus/wiki).
+
 
 # Built-in readers #
 Out of the box, Ficus can read most types from config:
