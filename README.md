@@ -148,7 +148,13 @@ If it exists, a valid apply method will be used instead of a constructor.
 
 If Ficus doesn't know how to read an arbitrary type, it will provide a helpful **compile-time** error message explaining why. It won't risk guessing incorrectly.
 
-Arbitrary type support requires Scala 2.10.2 or higher, because it takes advantage of implicit macros. To enable it, import `net.ceedubs.ficus.readers.ArbitraryTypeReader._`. Note that having the arbitrary type reader in scope can cause some implicit shadowing that you might not expect. If you define `MyClass` and define an `implicit val myClassReader: ValueReader[MyClass]` in the `MyClass` companion object, the arbitray type reader will still win the implicit prioritization battle unless you specifically `import MyClass.myClassReader`.
+Arbitrary type support requires Scala 2.10.2 or higher, because it takes advantage of implicit macros. To enable it, import `net.ceedubs.ficus.readers.ArbitraryTypeReader._`. Note that having the arbitrary type reader in scope can cause some implicit shadowing that you might not expect. If you define `MyClass` and define an `implicit val myClassReader: ValueReader[MyClass]` in the `MyClass` companion object, the arbitrary type reader will still win the implicit prioritization battle unless you specifically `import MyClass.myClassReader`.
+
+By default the config keys has to match exactly the field name in the class, which by java convention is camel cased. To enable hyphen cased mapping, i.e. hyphen cased config keys, you can import a hyphen cased name mapper into the scope, such as:
+
+```scala
+import net.ceedubs.ficus.readers.namemappers.implicits.hyphenCase
+```
 
 # Custom extraction #
 When you call `as[String]("somePath")`, Ficus config knows how to extract a String because there is an implicit `ValueReader[String]` in scope. If you would like, you can even teach it how to extract a `Foo` from the config using `as[Foo]("fooPath")` if you create your own `ValueReader[Foo]`. You could pass this Foo extractor explicitly to the `as` method, but most likely you just want to make it implicit. For an example of a custom value reader, see the `ValueReader[ServiceConfig]` defined in [ExampleSpec](https://github.com/ceedubs/ficus/blob/master/src/test/scala/net/ceedubs/ficus/ExampleSpec.scala).
