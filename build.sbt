@@ -43,7 +43,8 @@ libraryDependencies ++= Seq(
 )
 
 resolvers ++= Seq(
-  Resolver.sonatypeRepo("snapshots")
+  Resolver.sonatypeRepo("snapshots"),
+  Resolver.jcenterRepo
 )
 
 parallelExecution in Test := true
