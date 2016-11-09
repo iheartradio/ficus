@@ -44,6 +44,7 @@ libraryDependencies ++= Seq(
 
 resolvers ++= Seq(
   Resolver.sonatypeRepo("snapshots"),
+  Resolver.bintrayRepo("iheartradio","maven"),
   Resolver.jcenterRepo
 )
 
