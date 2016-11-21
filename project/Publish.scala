@@ -1,6 +1,5 @@
 import com.typesafe.sbt.pgp.PgpKeys
 import sbt._, Keys._
-import bintray.BintrayKeys._
 import sbtrelease.ReleasePlugin.autoImport._
 import sbtrelease.ReleaseStateTransformations._
 
