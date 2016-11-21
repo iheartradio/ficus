@@ -8,7 +8,7 @@ Ficus adds an `as[A]` method to a normal [Typesafe Config](http://typesafehub.gi
 [![Build Status](https://secure.travis-ci.org/iheartradio/ficus.png?branch=master)](http://travis-ci.org/iheartradio/ficus)
 [![Join the chat at https://gitter.im/iheartradio/ficus](https://badges.gitter.im/iheartradio/ficus.svg)](https://gitter.im/iheartradio/ficus?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 [![Coverage Status](https://coveralls.io/repos/github/iheartradio/ficus/badge.svg?branch=master)](https://coveralls.io/github/iheartradio/ficus?branch=master)
-
+[![Latest version](https://index.scala-lang.org/iheartradio/ficus/ficus/latest.svg?color=orange)](https://index.scala-lang.org/iheartradio/ficus)
 
 # Examples #
 ```scala
@@ -56,10 +56,7 @@ class Examples {
 For more detailed examples and how they match up with what's defined in a config file, see [the example spec](https://github.com/ceedubs/ficus/blob/master/src/test/scala/net/ceedubs/ficus/ExampleSpec.scala).
 
 # Adding the dependency #
-You most likely already have the Sonatype OSS Releases repository defined in your build, but if you don't, add this to your SBT build file (most likely build.sbt or project/build.scala):
-```scala
-resolvers +=  Resolver.bintrayRepo("iheartradio","maven")
-```
+
 
 Now add the Ficus dependency to your build SBT file as well:
 ```scala
@@ -71,10 +68,10 @@ libraryDependencies += "com.iheart" %% "ficus" % "1.1.3"
 
 // for Scala 2.11.x, 2.12.x and Java 8
 // See the latest version in the download badge below.
-libraryDependencies += "com.iheart" %% "ficus" % "1.3.2"
+libraryDependencies += "com.iheart" %% "ficus" % <latest version> //see latest version in the badge below
 ```
 
-[ ![Download](https://api.bintray.com/packages/iheartradio/maven/ficus/images/download.svg) ](https://bintray.com/iheartradio/maven/ficus/_latestVersion)
+[![Latest version](https://index.scala-lang.org/iheartradio/ficus/ficus/latest.svg?color=orange)](https://index.scala-lang.org/iheartradio/ficus)
 
 If you want to take advantage of Ficus's ability to automatically hydrate arbitrary traits and classes from configuration, you need to be on Scala version 2.10.2 or higer, because this functionality depends on implicit macros.
 

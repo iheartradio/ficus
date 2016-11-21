@@ -7,14 +7,6 @@ import sbtrelease.ReleaseStateTransformations._
 
 object Publish {
 
-  val bintraySettings = Seq(
-    bintrayOrganization := Some("iheartradio"),
-    bintrayPackageLabels := Seq("typesafe-config", "parser", "config")
-  )
-
-  import ReleaseTransformations._
-
-
   pomExtra in Global := {
 
       <developers>
