@@ -7,7 +7,7 @@ import scala.language.implicitConversions
 trait FicusInstances extends AnyValReaders with StringReader with SymbolReader with OptionReader
     with CollectionReaders with ConfigReader with DurationReaders
     with TryReader with ConfigValueReader with BigNumberReaders
-    with ISOZonedDateTimeReader
+    with ISOZonedDateTimeReader with PeriodReader with LocalDateReader
 
 object Ficus extends FicusInstances {
   implicit def toFicusConfig(config: Config): FicusConfig = SimpleFicusConfig(config)
