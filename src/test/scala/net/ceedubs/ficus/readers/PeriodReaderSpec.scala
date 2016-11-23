@@ -7,7 +7,8 @@ import Ficus.{ toFicusConfig, periodReader }
 
 class PeriodReaderSpec extends Spec { def is = s2"""
   The PeriodReader should 
-    read a Period in ISO-8601 format
+    read a Period in ISO-8601 format $readPeriod
+    read a negative Period $readNegativePeriod
   """
 
   def readPeriod = {

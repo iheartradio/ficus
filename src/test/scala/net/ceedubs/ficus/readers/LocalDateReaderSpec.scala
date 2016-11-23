@@ -8,7 +8,7 @@ import Ficus.{ toFicusConfig, localDateReader }
 
 class LocalDateReaderSpec extends Spec { def is = s2"""
   The LocalDateReader should 
-    read a LocalDate in ISO format without a time-zone
+    read a LocalDate in ISO format without a time-zone: $readLocalDate
   """
 
   def readLocalDate = {
@@ -19,7 +19,7 @@ class LocalDateReaderSpec extends Spec { def is = s2"""
          | }
        """.stripMargin)
     val localDate = cfg.as[LocalDate]("foo.date")
-    val expected = LocalDate.of(2016,1,3)
+    val expected = LocalDate.of(2003,1,3)
     localDate should_==(expected)
   }
 }
