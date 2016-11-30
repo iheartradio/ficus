@@ -8,9 +8,9 @@ description := "A Scala-friendly wrapper companion for Typesafe config"
 startYear := Some(2013)
 
 /* scala versions and options */
-scalaVersion := "2.12.0"
+scalaVersion := "2.11.8"
 
-crossScalaVersions := Seq(scalaVersion.value, "2.10.6", "2.11.8")
+crossScalaVersions := Seq(scalaVersion.value, "2.10.6", "2.12.0")
 
 // These options will be used for *all* versions.
 scalacOptions ++= Seq(

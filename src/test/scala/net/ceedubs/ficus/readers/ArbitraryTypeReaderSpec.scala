@@ -3,7 +3,6 @@ package readers
 
 import com.typesafe.config.ConfigFactory
 import ConfigSerializerOps._
-import net.ceedubs.ficus.readers.namemappers.NameMapper
 import shapeless.test.illTyped
 
 class ArbitraryTypeReaderSpec extends Spec { def is = s2"""
@@ -164,7 +163,7 @@ class ArbitraryTypeReaderSpec extends Spec { def is = s2"""
   def useNameMapper = prop { foo: String =>
     import Ficus.stringValueReader
     import ArbitraryTypeReader._
-    implicit val nameMapper = new NameMapper {
+    implicit val nameMapper: NameMapper = new NameMapper {
       override def map(name: String): String = name.toUpperCase
     }
 

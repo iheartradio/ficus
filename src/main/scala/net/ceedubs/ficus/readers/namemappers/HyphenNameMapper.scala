@@ -1,5 +1,7 @@
 package net.ceedubs.ficus.readers.namemappers
 
+import net.ceedubs.ficus.readers.NameMapper
+
 object HyphenNameMapper extends NameMapper {
   private lazy val r = "((?<=[a-z0-9])[A-Z]|(?<=[a-zA-Z])[0-9]|(?!^)[A-Z](?=[a-z]))".r
 

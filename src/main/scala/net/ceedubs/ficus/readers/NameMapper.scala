@@ -1,4 +1,4 @@
-package net.ceedubs.ficus.readers.namemappers
+package net.ceedubs.ficus.readers
 
 /**
   * Defines an object that knows to map between names as they found in the code
@@ -18,13 +18,21 @@ trait NameMapper {
   * Helper object to get the current name mapper
   */
 object NameMapper {
-
-
   /**
     * Gets the name mapper from the implicit scope
     * @param nameMapper The name mapper from the implicit scope, or the default name mapper if not found
     * @return The name mapper to be used in current implicit scope
     */
   def apply()(implicit nameMapper: NameMapper = DefaultNameMapper): NameMapper = nameMapper
+
+}
+
+
+/**
+ * Default implementation for name mapper, names in code equivalent to names in configuration
+ */
+case object DefaultNameMapper extends NameMapper {
+
+  override def map(name: String): String = name
 
 }

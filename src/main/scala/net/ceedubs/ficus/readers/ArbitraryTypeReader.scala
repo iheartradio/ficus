@@ -2,7 +2,6 @@ package net.ceedubs.ficus.readers
 
 import com.typesafe.config.Config
 import macrocompat.bundle
-import net.ceedubs.ficus.readers.namemappers.NameMapper
 import net.ceedubs.ficus.util.ReflectionUtils
 
 import scala.language.experimental.macros
@@ -25,7 +24,7 @@ class ArbitraryTypeReaderMacros(val c: blackbox.Context) extends ReflectionUtils
         def read(config: Config, path: String): T = instantiateFromConfig[T](
           config = c.Expr[Config](Ident(TermName("config"))),
           path = c.Expr[String](Ident(TermName("path"))),
-          mapper = c.Expr[NameMapper](q"""_root_.net.ceedubs.ficus.readers.namemappers.NameMapper()""")).splice
+          mapper = c.Expr[NameMapper](q"""_root_.net.ceedubs.ficus.readers.NameMapper()""")).splice
       }
     }
   }

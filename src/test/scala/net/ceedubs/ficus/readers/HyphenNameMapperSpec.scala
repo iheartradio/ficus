@@ -1,6 +1,7 @@
-package net.ceedubs.ficus
-package readers.namemappers
+package net.ceedubs.ficus.readers
 
+import net.ceedubs.ficus.Spec
+import net.ceedubs.ficus.readers.namemappers.HyphenNameMapper
 import org.scalacheck.Arbitrary
 import org.scalacheck.Gen._
 import org.specs2.matcher.DataTables
