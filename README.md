@@ -84,7 +84,7 @@ Out of the box, Ficus can read most types from config:
 * `Option[A]`
 * Collections (`List[A]`, `Set[A]`, `Map[String, A]`, `Array[A]`, etc. All types with a CanBuildFrom instance are supported)
 * `Config` and `ConfigValue` (Typesafe config/value)
-* `FiniteDuration`
+* `FiniteDuration` and `Duration`
 * The Scala `Enumeration` type.  See [Enumeration support](#enumeration-support)
 * Most arbitrary classes (as well as traits that have an apply method for instantiation). See [Arbitrary type support](#arbitrary-type-support)
 
