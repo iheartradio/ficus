@@ -1,5 +1,6 @@
-import com.typesafe.sbt.pgp.PgpKeys
-import sbt._, Keys._
+import sbt._
+import Keys._
+import com.jsuereth.sbtpgp.PgpKeys
 import sbtrelease.ReleasePlugin.autoImport._
 import sbtrelease.ReleaseStateTransformations._
 
@@ -25,7 +26,7 @@ object Publish {
 
   val publishingSettings = Seq(
 
-    organization in ThisBuild := "com.iheart",
+    ThisBuild / organization := "com.iheart",
     publishMavenStyle := true,
     licenses := Seq("MIT" -> url("http://www.opensource.org/licenses/mit-license.html")),
     homepage := Some(url("http://iheartradio.github.io/ficus")),
@@ -34,7 +35,7 @@ object Publish {
       "git@github.com:iheartradio/ficus.git",
       Some("git@github.com:iheartradio/ficus.git"))),
     pomIncludeRepository := { _ => false },
-    publishArtifact in Test := false,
+    Test / publishArtifact := false,
     publishTo := {
       val nexus = "https://oss.sonatype.org/"
       if (isSnapshot.value)

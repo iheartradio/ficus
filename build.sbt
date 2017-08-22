@@ -7,14 +7,14 @@ lazy val gcTask = gc := {
   System gc()
 }
 
-lazy val project = Project("project", file("."))
+lazy val root = project.in(file("."))
   .settings(
     /* basic project info */
     name := "ficus",
     description := "A Scala-friendly wrapper companion for Typesafe config",
     startYear := Some(2013),
     scalaVersion := "2.12.14",
-    crossScalaVersions := Seq("2.10.7", "2.11.12", scalaVersion.value, "2.13.4"),
+    crossScalaVersions := Seq("2.10.7", "2.11.12", scalaVersion.value, "2.13.6"),
     scalacOptions ++= Seq(
       "-feature",
       "-deprecation",
@@ -30,23 +30,23 @@ lazy val project = Project("project", file("."))
     javacOptions ++= Seq(
       "-Xlint:unchecked", "-Xlint:deprecation"
     ),
-    unmanagedSourceDirectories in Compile ++= {
-      (unmanagedSourceDirectories in Compile).value.map { dir =>
+    Compile / unmanagedSourceDirectories ++= {
+      (Compile / unmanagedSourceDirectories).value.map { dir =>
         CrossVersion.partialVersion(scalaVersion.value) match {
           case Some((2, 13)) => file(dir.getPath ++ "-2.13+")
           case _             => file(dir.getPath ++ "-2.13-")
         }
       }
     },
-    unmanagedSourceDirectories in Test ++= {
-      (unmanagedSourceDirectories in Test).value.map { dir =>
+    Test / unmanagedSourceDirectories ++= {
+      (Test / unmanagedSourceDirectories).value.map { dir =>
         CrossVersion.partialVersion(scalaVersion.value) match {
           case Some((2, 13)) => file(dir.getPath ++ "-2.13+")
           case _ =>  file(dir.getPath ++ "-2.13-")
         }
       }
     },
-    libraryDependencies ++= 
+    libraryDependencies ++=
       (if (scalaVersion.value.startsWith("2.10"))
          Seq(
            "org.specs2"     %% "specs2-core"       % "3.10.0" % Test,
@@ -54,7 +54,7 @@ lazy val project = Project("project", file("."))
        else
          Seq(
            "org.specs2"     %% "specs2-core"       % "4.8.3" % Test,
-           "org.specs2"     %% "specs2-scalacheck" % "4.8.3" % Test)) ++ 
+           "org.specs2"     %% "specs2-scalacheck" % "4.8.3" % Test)) ++
          Seq(
            "org.scalacheck" %% "scalacheck"        % "1.14.1" % Test,
            "com.chuusai"    %% "shapeless"         % "2.3.3"  % Test,
@@ -72,13 +72,13 @@ lazy val project = Project("project", file("."))
       Resolver.bintrayRepo("iheartradio","maven"),
       Resolver.jcenterRepo
     ),
-    parallelExecution in Test := true,
+    Test / parallelExecution := true,
     /* sbt behavior */
-    logLevel in compile := Level.Warn,
+    compile / logLevel := Level.Warn,
     traceLevel := 5,
     offline := false,
-    mappings in (Compile, packageBin) := {
-      val ms = mappings.in(Compile, packageBin).value
+    Compile / packageBin / mappings := {
+      val ms = (Compile / packageBin / mappings).value
       ms filter { case (_, toPath) =>
         toPath != "application.conf"
       }
