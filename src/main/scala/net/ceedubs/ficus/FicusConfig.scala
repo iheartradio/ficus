@@ -7,6 +7,8 @@ import scala.language.implicitConversions
 trait FicusConfig {
   def config: Config
 
+  def as[A]()(implicit reader : ValueReader[A]) : A = reader.read(config)
+
   def as[A](path: String)(implicit reader: ValueReader[A]): A = reader.read(config, path)
 
   def getAs[A](path: String)(implicit reader: ValueReader[Option[A]]): Option[A] = reader.read(config, path)

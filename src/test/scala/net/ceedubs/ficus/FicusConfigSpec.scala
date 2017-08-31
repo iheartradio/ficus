@@ -13,7 +13,7 @@ class FicusConfigSpec extends Spec { def is = s2"""
     getOrElse an existing value as asked type $getOrElseFromConfig
     getOrElse a missing value with default value $getOrElseFromDefault
     getOrElse an existing value as asked type with customer reader $getOrElseFromConfigWithCustomValueReader
-    accept a CongigKey and return the appropriate type $acceptAConfigKey
+    accept a ConfigKey and return the appropriate type $acceptAConfigKey
   """
 
   def implicitlyConverted = {

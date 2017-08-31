@@ -25,6 +25,8 @@ class CaseClassReadersSpec extends Spec { def is = s2"""
     hydrate a case class with multiple fields $multipleFields
     use another implicit value reader for a field $withOptionField
     read a nested case class $withNestedCaseClass
+    read a top-level case class $withTopLevelCaseClass
+    read a top-level case class with nested case class $withTopLevelCaseClassWithNestedCaseClass
     read a top-level value class $topLevelValueClass
     read a nested value class $nestedValueClass
     fall back to a default value $fallbackToDefault
@@ -69,6 +71,22 @@ class CaseClassReadersSpec extends Spec { def is = s2"""
         |}
       """.stripMargin)
     cfg.as[WithNestedCaseClass]("withNested") must_== WithNestedCaseClass(
+      simple = SimpleCaseClass(bool = bool))
+  }
+
+  def withTopLevelCaseClass = prop{ bool : Boolean =>
+    val cfg = ConfigFactory.parseString(s"{bool = $bool}")
+    cfg.as[SimpleCaseClass] must_== SimpleCaseClass(bool = bool)
+  }
+
+  def withTopLevelCaseClassWithNestedCaseClass = prop{bool : Boolean =>
+    val cfg = ConfigFactory.parseString(
+      s"""
+         |  simple {
+         |    bool = $bool
+         |  }
+      """.stripMargin)
+    cfg.as[WithNestedCaseClass] must_== WithNestedCaseClass(
       simple = SimpleCaseClass(bool = bool))
   }
 
