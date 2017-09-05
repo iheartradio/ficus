@@ -1,13 +1,14 @@
 package net.ceedubs.ficus
 
 import com.typesafe.config.Config
-import net.ceedubs.ficus.readers.{AllValueReaderInstances, ValueReader}
+import net.ceedubs.ficus.readers.{AllValueReaderInstances, CompositeValueReader, ValueReader}
+
 import scala.language.implicitConversions
 
 trait FicusConfig {
   def config: Config
 
-  def as[A]()(implicit reader : ValueReader[A]) : A = reader.read(config)
+  def as[A](implicit reader : CompositeValueReader[A]) : A = reader.read(config)
 
   def as[A](path: String)(implicit reader: ValueReader[A]): A = reader.read(config, path)
 

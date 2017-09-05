@@ -10,6 +10,8 @@ import scala.reflect.macros.blackbox
 
 trait ArbitraryTypeReader {
   implicit def arbitraryTypeValueReader[T]: ValueReader[T] = macro ArbitraryTypeReaderMacros.arbitraryTypeValueReader[T]
+
+  implicit def arbitraryTypeCompositeValueReader[T]: CompositeValueReader[T] = macro ArbitraryTypeReaderMacros.arbitraryTypeCompositeValueReader[T]
 }
 
 object ArbitraryTypeReader extends ArbitraryTypeReader
@@ -20,13 +22,19 @@ class ArbitraryTypeReaderMacros(val c: blackbox.Context) extends ReflectionUtils
 
   def arbitraryTypeValueReader[T : c.WeakTypeTag]: c.Expr[ValueReader[T]] = {
     reify {
-      new ValueReader[T] {
+      new ValueReader[T]{
         def read(config: Config, path: String): T = instantiateFromConfig[T](
           config = c.Expr[Config](Ident(TermName("config"))),
           path = Some(c.Expr[String](Ident(TermName("path")))),
           mapper = c.Expr[NameMapper](q"""_root_.net.ceedubs.ficus.readers.NameMapper()""")).splice
+      }
+    }
+  }
 
-        override def read(config: Config) : T = instantiateFromConfig[T](
+  def arbitraryTypeCompositeValueReader[T : c.WeakTypeTag]: c.Expr[CompositeValueReader[T]] = {
+    reify {
+      new CompositeValueReader[T] {
+        def read(config: Config) : T = instantiateFromConfig[T](
           config = c.Expr[Config](Ident(TermName("config"))),
           path = None,
           mapper = c.Expr[NameMapper](q"""_root_.net.ceedubs.ficus.readers.NameMapper()""")).splice
