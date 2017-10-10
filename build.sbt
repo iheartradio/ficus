@@ -8,9 +8,9 @@ description := "A Scala-friendly wrapper companion for Typesafe config"
 startYear := Some(2013)
 
 /* scala versions and options */
-scalaVersion := "2.11.8"
+scalaVersion := "2.11.11"
 
-crossScalaVersions := Seq(scalaVersion.value, "2.10.6", "2.12.0")
+crossScalaVersions := Seq(scalaVersion.value, "2.10.6", "2.12.3")
 
 // These options will be used for *all* versions.
 scalacOptions ++= Seq(
@@ -35,7 +35,7 @@ libraryDependencies ++= Seq(
   "org.specs2"     %% "specs2-scalacheck" % "3.8.6"  % "test",
   "org.scalacheck" %% "scalacheck"        % "1.13.4" % "test",
   "com.chuusai"    %% "shapeless"         % "2.3.2"  % "test",
-  "com.typesafe"   %  "config"            % "1.3.1",
+  "com.typesafe"   %  "config"            % "1.3.2",
   "org.scala-lang" %  "scala-reflect"     % scalaVersion.value % "provided",
   "org.scala-lang" % "scala-compiler"     % scalaVersion.value % "provided",
   "org.typelevel"  %% "macro-compat"      % "1.1.1",
