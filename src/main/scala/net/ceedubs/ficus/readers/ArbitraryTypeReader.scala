@@ -61,7 +61,7 @@ class ArbitraryTypeReaderMacros(val c: blackbox.Context) extends ReflectionUtils
 
     method.paramLists.head.zipWithIndex map { case (param, index) =>
       val name = param.name.decodedName.toString
-      val key = q"""$path + "." + $mapper.map($name)"""
+      val key = q"""if ($path == ".") $mapper.map($name) else $path + "." + $mapper.map($name)"""
       val returnType: Type = param.typeSignatureIn(c.weakTypeOf[T])
 
       companionObjectMaybe.filter(_ => param.asTerm.isParamWithDefault) map { companionObject =>

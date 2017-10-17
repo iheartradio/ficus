@@ -9,6 +9,8 @@ trait FicusConfig {
 
   def as[A](path: String)(implicit reader: ValueReader[A]): A = reader.read(config, path)
 
+  def as[A](implicit reader: ValueReader[A]): A = reader.read(config, ".")
+
   def getAs[A](path: String)(implicit reader: ValueReader[Option[A]]): Option[A] = reader.read(config, path)
 
   def getOrElse[A](path: String, default: => A)(implicit reader: ValueReader[Option[A]]): A = getAs[A](path).getOrElse(default)

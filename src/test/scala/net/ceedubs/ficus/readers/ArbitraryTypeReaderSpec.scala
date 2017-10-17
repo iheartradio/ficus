@@ -8,6 +8,7 @@ import shapeless.test.illTyped
 class ArbitraryTypeReaderSpec extends Spec { def is = s2"""
   An arbitrary type reader should
     instantiate with a single-param apply method $instantiateSingleParamApply
+    instantiate with a single-param apply method from config itself $instantiateSingleParamApplyFromSelf
     instantiate with no apply method but a single constructor with a single param $instantiateSingleParamConstructor
     instantiate with a multi-param apply method $instantiateMultiParamApply
     instantiate with no apply method but a single constructor with multiple params $instantiateMultiParamConstructor
@@ -33,6 +34,14 @@ class ArbitraryTypeReaderSpec extends Spec { def is = s2"""
     import ArbitraryTypeReader._
     val cfg = ConfigFactory.parseString(s"simple { foo2 = ${foo2.asConfigValue} }")
     val instance: WithSimpleCompanionApply = arbitraryTypeValueReader[WithSimpleCompanionApply].read(cfg, "simple")
+    instance.foo must_== foo2
+  }
+
+  def instantiateSingleParamApplyFromSelf = prop { foo2: String =>
+    import Ficus.stringValueReader
+    import ArbitraryTypeReader._
+    val cfg = ConfigFactory.parseString(s"simple { foo2 = ${foo2.asConfigValue} }")
+    val instance: WithSimpleCompanionApply = arbitraryTypeValueReader[WithSimpleCompanionApply].read(cfg.getConfig("simple"), ".")
     instance.foo must_== foo2
   }
 

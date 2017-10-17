@@ -5,7 +5,7 @@ import net.ceedubs.ficus.{SimpleFicusConfig, FicusConfig}
 
 trait ConfigReader {
   implicit val configValueReader: ValueReader[Config] = new ValueReader[Config] {
-    def read(config: Config, path: String): Config = config.getConfig(path)
+    def read(config: Config, path: String): Config = if (path == ".") config else config.getConfig(path)
   }
 
   implicit val ficusConfigValueReader: ValueReader[FicusConfig] = configValueReader.map(SimpleFicusConfig)

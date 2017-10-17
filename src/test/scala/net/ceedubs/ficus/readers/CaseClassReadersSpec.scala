@@ -22,6 +22,7 @@ class CaseClassReadersSpec extends Spec { def is = s2"""
   A case class reader should
     be able to be used implicitly $useImplicitly
     hydrate a simple case class $hydrateSimpleCaseClass
+    hydrate a simple case class from config itself $hydrateSimpleCaseClassFromSelf
     hydrate a case class with multiple fields $multipleFields
     use another implicit value reader for a field $withOptionField
     read a nested case class $withNestedCaseClass
@@ -41,6 +42,11 @@ class CaseClassReadersSpec extends Spec { def is = s2"""
   def hydrateSimpleCaseClass = prop { bool: Boolean =>
     val cfg = ConfigFactory.parseString(s"simple { bool = $bool }")
     cfg.as[SimpleCaseClass]("simple") must_== SimpleCaseClass(bool = bool)
+  }
+
+  def hydrateSimpleCaseClassFromSelf = prop { bool: Boolean =>
+    val cfg = ConfigFactory.parseString(s"simple { bool = $bool }")
+    cfg.getConfig("simple").as[SimpleCaseClass] must_== SimpleCaseClass(bool = bool)
   }
 
   def multipleFields = prop { (foo: String, long: Long) =>
