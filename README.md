@@ -3,7 +3,7 @@ Official repo for ficus. Adopted from [ceedubs](https://github.com/ceedubs/ficus
 # Ficus #
 Ficus is a lightweight companion to Typesafe config that makes it more Scala-friendly.
 
-Ficus adds an `as[A]` method to a normal [Typesafe Config](http://typesafehub.github.io/config/latest/api/com/typesafe/config/Config.html) so you can do things like `config.as[Option[Int]]`, `config.as[List[String]]`, or even `config.as[MyClass]`. It is implemented with type classes so that it is easily extensible and many silly mistakes can be caught by the compiler.
+Ficus adds an `as[A]` method to a normal [Typesafe Config](http://lightbend.github.io/config/latest/api/com/typesafe/config/Config.html) so you can do things like `config.as[Option[Int]]`, `config.as[List[String]]`, or even `config.as[MyClass]`. It is implemented with type classes so that it is easily extensible and many silly mistakes can be caught by the compiler.
 
 [![Build Status](https://secure.travis-ci.org/iheartradio/ficus.png?branch=master)](http://travis-ci.org/iheartradio/ficus)
 [![Join the chat at https://gitter.im/iheartradio/ficus](https://badges.gitter.im/iheartradio/ficus.svg)](https://gitter.im/iheartradio/ficus?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
