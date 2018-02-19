@@ -89,7 +89,7 @@ Out of the box, Ficus can read most types from config:
 * The Scala `Enumeration` type.  See [Enumeration support](#enumeration-support)
 * Most arbitrary classes (as well as traits that have an apply method for instantiation). See [Arbitrary type support](#arbitrary-type-support)
 
-In this context, `A` means any type for which a `ValueReader` is already defined. For example, `Option[String]` is supported out of the box because `String` is. If you want to be able to extract an `Option[Foo[A]]` for some some type `Foo` that doesn't meet the supported type requirements (for example, this `Foo` has a type parameter), the option part is taken care of, but you will need to provide the implementation for extracting a `Foo[A]` from config. See [Custom extraction](#custom-extraction).
+In this context, `A` means any type for which a `ValueReader` is already defined. For example, `Option[String]` is supported out of the box because `String` is. If you want to be able to extract an `Option[Foo[A]]` for some type `Foo` that doesn't meet the supported type requirements (for example, this `Foo` has a type parameter), the option part is taken care of, but you will need to provide the implementation for extracting a `Foo[A]` from config. See [Custom extraction](#custom-extraction).
 
 # Imports #
 The easiest way to start using Ficus config is to just `import net.ceedubs.ficus.Ficus._` as was done in the Examples section. This will import all of the implicit values you need to start easily grabbing most basic types out of config using the `as` method that will become available on Typesafe `Config` objects.
