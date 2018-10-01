@@ -1,9 +1,11 @@
 package net.ceedubs.ficus.readers
 
+import com.typesafe.config.ConfigException.WrongType
 import com.typesafe.config.ConfigFactory
 import net.ceedubs.ficus.Spec
 
-class BigNumberReadersSpec extends Spec with BigNumberReaders { def is = s2"""
+class BigNumberReadersSpec extends Spec with BigNumberReaders {
+  def is = s2"""
   The BigDecimal value reader should
     read a double $readDoubleAsBigDecimal
     read a long $readLongAsBigDecimal
@@ -11,14 +13,15 @@ class BigNumberReadersSpec extends Spec with BigNumberReaders { def is = s2"""
     read a bigInt $readBigIntAsBigDecimal
     read a bigDecimalAsString $readBigDecimalAsStringBigDecimal
     read a bigIntAsString $readBigIntAsStringBigDecimal
+    detect wrong type on malformed BigDecimal $readMalformedBigDecimal
 
   The BigInt value reader should
     read an int $readIntAsBigInt
     read a long $readLongAsBigInt
     read a bigInt $readBigIntAsBigInt
     read a bigIntAsString $readBigIntAsStringBigInt
-
-  """
+    detect wrong type on malformed BigInt $readMalformedBigInt
+   """
 
   def readDoubleAsBigDecimal = prop { d: Double =>
     val cfg = ConfigFactory.parseString(s"myValue = $d")
@@ -65,6 +68,12 @@ class BigNumberReadersSpec extends Spec with BigNumberReaders { def is = s2"""
     }
   }
 
+  def readMalformedBigDecimal = {
+    val malformedBigDecimal = "foo"
+    val cfg = ConfigFactory.parseString(s"myValue = ${"\"" + malformedBigDecimal + "\""}")
+    bigDecimalReader.read(cfg, "myValue") must throwA[WrongType]
+  }
+
   def readBigIntAsBigDecimal = prop{ b: BigInt =>
     scala.util.Try(BigDecimal(b)).toOption.isDefined ==> {
       val cfg = ConfigFactory.parseString(s"myValue = $b")
@@ -96,4 +105,9 @@ class BigNumberReadersSpec extends Spec with BigNumberReaders { def is = s2"""
     }
   }
 
+  def readMalformedBigInt = {
+    val malformedBigInt = "foo"
+    val cfg = ConfigFactory.parseString(s"myValue = ${"\"" + malformedBigInt + "\""}")
+    bigIntReader.read(cfg, "myValue") must throwA[WrongType]
+  }
 }
