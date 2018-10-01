@@ -3,9 +3,9 @@ sudo: required
 dist: trusty
 
 scala:
-  - 2.10.6
-  - 2.11.11
-  - 2.12.3
+  - 2.10.7
+  - 2.11.12
+  - 2.12.7
 jdk:
   - oraclejdk8
   - openjdk8

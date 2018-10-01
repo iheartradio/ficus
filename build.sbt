@@ -8,9 +8,9 @@ description := "A Scala-friendly wrapper companion for Typesafe config"
 startYear := Some(2013)
 
 /* scala versions and options */
-scalaVersion := "2.11.11"
+scalaVersion := "2.11.12"
 
-crossScalaVersions := Seq(scalaVersion.value, "2.10.6", "2.12.3")
+crossScalaVersions := Seq(scalaVersion.value, "2.10.7", "2.12.7")
 
 // These options will be used for *all* versions.
 scalacOptions ++= Seq(
@@ -20,6 +20,7 @@ scalacOptions ++= Seq(
   "-encoding", "UTF-8",
   "-target:jvm-1." + {
     CrossVersion.partialVersion(scalaVersion.value).collect {
+      case (2, minor) if minor <= 10  & scalaVersion.value == "2.10.7" => "8"
       case (2, minor) if minor <= 10 => "7"
     }.getOrElse("8")
   }
