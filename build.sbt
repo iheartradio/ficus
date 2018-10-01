@@ -32,15 +32,15 @@ javacOptions ++= Seq(
 
 /* dependencies */
 libraryDependencies ++= Seq(
-  "org.specs2"     %% "specs2-core"       % "3.8.6"  % "test",
-  "org.specs2"     %% "specs2-scalacheck" % "3.8.6"  % "test",
-  "org.scalacheck" %% "scalacheck"        % "1.13.4" % "test",
-  "com.chuusai"    %% "shapeless"         % "2.3.2"  % "test",
-  "com.typesafe"   %  "config"            % "1.3.2",
-  "org.scala-lang" %  "scala-reflect"     % scalaVersion.value % "provided",
-  "org.scala-lang" % "scala-compiler"     % scalaVersion.value % "provided",
+  "org.specs2"     %% "specs2-core"       % "3.10.0" % Test,
+  "org.specs2"     %% "specs2-scalacheck" % "3.10.0" % Test,
+  "org.scalacheck" %% "scalacheck"        % "1.14.0" % Test,
+  "com.chuusai"    %% "shapeless"         % "2.3.3"  % Test,
+  "com.typesafe"   %  "config"            % "1.3.3",
+  "org.scala-lang" %  "scala-reflect"     % scalaVersion.value % Provided,
+  "org.scala-lang" %  "scala-compiler"    % scalaVersion.value % Provided,
   "org.typelevel"  %% "macro-compat"      % "1.1.1",
-  compilerPlugin("org.scalamacros" % "paradise" % "2.1.0" cross CrossVersion.full)
+  compilerPlugin("org.scalamacros" % "paradise" % "2.1.1" cross CrossVersion.full)
 )
 
 resolvers ++= Seq(
