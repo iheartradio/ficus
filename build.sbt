@@ -35,7 +35,7 @@ libraryDependencies ++= Seq(
   "org.specs2"     %% "specs2-scalacheck" % "3.8.6"  % "test",
   "org.scalacheck" %% "scalacheck"        % "1.13.4" % "test",
   "com.chuusai"    %% "shapeless"         % "2.3.2"  % "test",
-  "com.typesafe"   %  "config"            % "1.3.2",
+  "com.typesafe"   %  "config"            % "1.3.3",
   "org.scala-lang" %  "scala-reflect"     % scalaVersion.value % "provided",
   "org.scala-lang" % "scala-compiler"     % scalaVersion.value % "provided",
   "org.typelevel"  %% "macro-compat"      % "1.1.1",
