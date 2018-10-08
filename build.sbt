@@ -10,7 +10,7 @@ startYear := Some(2013)
 /* scala versions and options */
 scalaVersion := "2.11.11"
 
-crossScalaVersions := Seq(scalaVersion.value, "2.10.6", "2.12.3")
+crossScalaVersions := Seq(scalaVersion.value, "2.10.6", "2.12.7")
 
 // These options will be used for *all* versions.
 scalacOptions ++= Seq(
