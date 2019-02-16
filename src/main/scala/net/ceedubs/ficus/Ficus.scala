@@ -8,6 +8,7 @@ trait FicusInstances extends AnyValReaders with StringReader with SymbolReader w
     with CollectionReaders with ConfigReader with DurationReaders
     with TryReader with ConfigValueReader with BigNumberReaders
     with ISOZonedDateTimeReader with PeriodReader with LocalDateReader with URIReaders with URLReader
+    with InetSocketAddressReaders
 
 object Ficus extends FicusInstances {
   implicit def toFicusConfig(config: Config): FicusConfig = SimpleFicusConfig(config)
