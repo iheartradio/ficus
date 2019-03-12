@@ -14,7 +14,7 @@ lazy val project = Project("project", file("."))
     description := "A Scala-friendly wrapper companion for Typesafe config",
     startYear := Some(2013),
     scalaVersion := "2.12.8",
-    crossScalaVersions := Seq("2.10.7", "2.11.12", scalaVersion.value),
+    crossScalaVersions := Seq("2.10.7", "2.11.12", scalaVersion.value, "2.13.0-RC1"),
     scalacOptions ++= Seq(
       "-feature",
       "-deprecation",
@@ -30,17 +30,34 @@ lazy val project = Project("project", file("."))
     javacOptions ++= Seq(
       "-Xlint:unchecked", "-Xlint:deprecation"
     ),
-    libraryDependencies ++= Seq(
-      "org.specs2"     %% "specs2-core"       % "3.10.0" % Test,
-      "org.specs2"     %% "specs2-scalacheck" % "3.10.0" % Test,
-      "org.scalacheck" %% "scalacheck"        % "1.14.0" % Test,
-      "com.chuusai"    %% "shapeless"         % "2.3.3"  % Test,
-      "com.typesafe"   %  "config"            % "1.3.3",
-      "org.scala-lang" %  "scala-reflect"     % scalaVersion.value % Provided,
-      "org.scala-lang" %  "scala-compiler"    % scalaVersion.value % Provided,
-      "org.typelevel"  %% "macro-compat"      % "1.1.1",
-      compilerPlugin("org.scalamacros" % "paradise" % "2.1.1" cross CrossVersion.full)
-    ),
+    unmanagedSourceDirectories in Compile ++= {
+      (unmanagedSourceDirectories in Compile).value.map { dir =>
+        CrossVersion.partialVersion(scalaVersion.value) match {
+          case Some((2, 13)) => file(dir.getPath ++ "-2.13+")
+          case _             => file(dir.getPath ++ "-2.13-")
+        }
+      }
+    },
+    libraryDependencies ++= 
+      (if (scalaVersion.value.startsWith("2.10"))
+         Seq(
+           "org.specs2"     %% "specs2-core"       % "3.10.0" % Test,
+           "org.specs2"     %% "specs2-scalacheck" % "3.10.0" % Test)
+       else
+         Seq(
+           "org.specs2"     %% "specs2-core"       % "4.5.1" % Test,
+           "org.specs2"     %% "specs2-scalacheck" % "4.5.1" % Test)) ++ 
+         Seq(
+           "org.scalacheck" %% "scalacheck"        % "1.14.0" % Test,
+           "com.chuusai"    %% "shapeless"         % "2.3.3"  % Test,
+           "com.typesafe"   %  "config"            % "1.3.3",
+           "org.scala-lang" %  "scala-reflect"     % scalaVersion.value % Provided,
+           "org.scala-lang" %  "scala-compiler"    % scalaVersion.value % Provided,
+           "org.typelevel"  %% "macro-compat"      % "1.1.1") ++
+      (if (!scalaVersion.value.startsWith("2.13"))
+         Seq(compilerPlugin("org.scalamacros" % "paradise" % "2.1.1" cross CrossVersion.full))
+       else
+         Seq.empty[ModuleID]),
     resolvers ++= Seq(
       Resolver.sonatypeRepo("snapshots"),
       Resolver.bintrayRepo("iheartradio","maven"),
