@@ -31,7 +31,7 @@ class DurationReadersSpec extends Spec with DurationReaders { def is = s2"""
   }
 
   def readDaysUnit[T](reader: ValueReader[T]) = Prop.forAll(Gen.choose(-106580, 106580)) { i: Int =>
-    val str = i + " day" + (if (i == 1) "" else "s")
+    val str = i.toString + " day" + (if (i == 1) "" else "s")
     val cfg = ConfigFactory.parseString(s"""myValue = "$str" """)
     reader.read(cfg, "myValue").toString must beEqualTo(str)
   }

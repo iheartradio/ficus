@@ -48,7 +48,7 @@ class EitherReadersSpec extends Spec with EitherReader with OptionReader with An
 
   def leftSideTry = prop{ a : Int =>
     val badVal = a.toString + "xx"
-    eitherReader[Try[String], Int].read( badVal.toConfigValue.atKey("x"), "x" ) must beLeft( beSuccessfulTry( badVal) )
+    eitherReader[Try[String], Int].read( badVal.toConfigValue.atKey("x"), "x" ) must beLeft( beSuccessfulTry[String]( badVal) )
     eitherReader[Try[Int], Int].read( badVal.toConfigValue.atKey("x"), "x" ) must beLeft( beFailedTry[Int] )
   }
 

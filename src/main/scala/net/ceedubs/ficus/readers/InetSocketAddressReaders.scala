@@ -8,9 +8,9 @@ trait InetSocketAddressReaders {
   private def parseHostAndPort(unparsedHostAndPort: String): Option[InetSocketAddress] = {
     val hostAndPort = """([a-zA-Z0-9\.\-]+)\s*:\s*(\d+)""".r
     unparsedHostAndPort match {
-      case hostAndPort(host, port) ⇒
+      case hostAndPort(host, port) =>
         Some(new InetSocketAddress(host, port.toInt))
-      case _ ⇒
+      case _ =>
         None
     }
   }
