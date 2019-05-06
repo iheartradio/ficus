@@ -35,7 +35,7 @@ lazy val project = Project("project", file("."))
       "org.specs2"     %% "specs2-scalacheck" % "3.10.0" % Test,
       "org.scalacheck" %% "scalacheck"        % "1.14.0" % Test,
       "com.chuusai"    %% "shapeless"         % "2.3.3"  % Test,
-      "com.typesafe"   %  "config"            % "1.3.3",
+      "com.typesafe"   %  "config"            % "1.3.4",
       "org.scala-lang" %  "scala-reflect"     % scalaVersion.value % Provided,
       "org.scala-lang" %  "scala-compiler"    % scalaVersion.value % Provided,
       "org.typelevel"  %% "macro-compat"      % "1.1.1",
