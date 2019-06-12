@@ -1,0 +1,3 @@
+package macrocompat
+
+class bundle

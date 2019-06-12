@@ -14,7 +14,7 @@ lazy val project = Project("project", file("."))
     description := "A Scala-friendly wrapper companion for Typesafe config",
     startYear := Some(2013),
     scalaVersion := "2.12.8",
-    crossScalaVersions := Seq("2.10.7", "2.11.12", scalaVersion.value, "2.13.0-RC1"),
+    crossScalaVersions := Seq("2.10.7", "2.11.12", scalaVersion.value, "2.13.0"),
     scalacOptions ++= Seq(
       "-feature",
       "-deprecation",
@@ -52,10 +52,11 @@ lazy val project = Project("project", file("."))
            "com.chuusai"    %% "shapeless"         % "2.3.3"  % Test,
            "com.typesafe"   %  "config"            % "1.3.4",
            "org.scala-lang" %  "scala-reflect"     % scalaVersion.value % Provided,
-           "org.scala-lang" %  "scala-compiler"    % scalaVersion.value % Provided,
-           "org.typelevel"  %% "macro-compat"      % "1.1.1") ++
+           "org.scala-lang" %  "scala-compiler"    % scalaVersion.value % Provided) ++
       (if (!scalaVersion.value.startsWith("2.13"))
-         Seq(compilerPlugin("org.scalamacros" % "paradise" % "2.1.1" cross CrossVersion.full))
+         Seq(
+           compilerPlugin("org.scalamacros" % "paradise" % "2.1.1" cross CrossVersion.full),
+           "org.typelevel"  %% "macro-compat"      % "1.1.1")
        else
          Seq.empty[ModuleID]),
     resolvers ++= Seq(
