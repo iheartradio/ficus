@@ -2,7 +2,7 @@ resolvers += "Typesafe Repository" at "https://repo.typesafe.com/typesafe/releas
 
 addSbtPlugin("org.scoverage" % "sbt-scoverage" % "1.6.0")
 
-addSbtPlugin("org.scoverage" % "sbt-coveralls" % "1.2.6")
+addSbtPlugin("org.scoverage" % "sbt-coveralls" % "1.2.7")
 
 addSbtPlugin("com.github.gseitz" % "sbt-release" % "1.0.11")
 
