@@ -67,7 +67,7 @@ libraryDependencies += "com.iheart" %% "ficus" % "1.0.2"
 // for Scala 2.11.x and Java 7
 libraryDependencies += "com.iheart" %% "ficus" % "1.1.3"
 
-// for Scala 2.11.x, 2.12.x and Java 8
+// for Scala 2.11.x, 2.12.x, 2.13.x and Java 8
 // See the latest version in the download badge below.
 libraryDependencies += "com.iheart" %% "ficus" % <latest version> //see latest version in the badge below
 ```
