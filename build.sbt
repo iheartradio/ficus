@@ -50,7 +50,7 @@ lazy val project = Project("project", file("."))
          Seq(
            "org.scalacheck" %% "scalacheck"        % "1.14.1" % Test,
            "com.chuusai"    %% "shapeless"         % "2.3.3"  % Test,
-           "com.typesafe"   %  "config"            % "1.3.4",
+           "com.typesafe"   %  "config"            % "1.4.0",
            "org.scala-lang" %  "scala-reflect"     % scalaVersion.value % Provided,
            "org.scala-lang" %  "scala-compiler"    % scalaVersion.value % Provided) ++
       (if (!scalaVersion.value.startsWith("2.13"))
