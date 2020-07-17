@@ -8,8 +8,10 @@ import scala.language.experimental.macros
 import scala.reflect.internal.{Definitions, StdNames, SymbolTable}
 import scala.reflect.macros.blackbox
 
+case class Generated[+A](value: A) extends AnyVal
+
 trait ArbitraryTypeReader {
-  implicit def arbitraryTypeValueReader[T]: ValueReader[T] = macro ArbitraryTypeReaderMacros.arbitraryTypeValueReader[T]
+  implicit def arbitraryTypeValueReader[T]: Generated[ValueReader[T]] = macro ArbitraryTypeReaderMacros.arbitraryTypeValueReader[T]
 }
 
 object ArbitraryTypeReader extends ArbitraryTypeReader
@@ -18,14 +20,14 @@ object ArbitraryTypeReader extends ArbitraryTypeReader
 class ArbitraryTypeReaderMacros(val c: blackbox.Context) extends ReflectionUtils {
   import c.universe._
 
-  def arbitraryTypeValueReader[T : c.WeakTypeTag]: c.Expr[ValueReader[T]] = {
+  def arbitraryTypeValueReader[T : c.WeakTypeTag]: c.Expr[Generated[ValueReader[T]]] = {
     reify {
-      new ValueReader[T] {
+      Generated(new ValueReader[T] {
         def read(config: Config, path: String): T = instantiateFromConfig[T](
           config = c.Expr[Config](Ident(TermName("config"))),
           path = c.Expr[String](Ident(TermName("path"))),
           mapper = c.Expr[NameMapper](q"""_root_.net.ceedubs.ficus.readers.NameMapper()""")).splice
-      }
+      })
     }
   }
 

@@ -18,6 +18,7 @@ trait ValueReader[A] { self =>
 }
 
 object ValueReader {
+  implicit def generatedReader[A](implicit generated: Generated[ValueReader[A]]): ValueReader[A] = generated.value
 
   /** Returns the implicit ValueReader[A] in scope.
     * `ValueReader[A]` is equivalent to `implicitly[ValueReader[A]]`
