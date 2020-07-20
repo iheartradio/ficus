@@ -1,3 +1,3 @@
 package macrocompat
 
-class bundle
+class bundle extends scala.annotation.Annotation
