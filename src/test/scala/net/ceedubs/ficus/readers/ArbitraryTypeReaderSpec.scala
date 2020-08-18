@@ -33,7 +33,7 @@ class ArbitraryTypeReaderSpec extends Spec { def is = s2"""
     import Ficus.stringValueReader
     import ArbitraryTypeReader._
     val cfg = ConfigFactory.parseString(s"simple { foo2 = ${foo2.asConfigValue} }")
-    val instance: WithSimpleCompanionApply = arbitraryTypeValueReader[WithSimpleCompanionApply].read(cfg, "simple")
+    val instance: WithSimpleCompanionApply = arbitraryTypeValueReader[WithSimpleCompanionApply].value.read(cfg, "simple")
     instance.foo must_== foo2
   }
 
@@ -41,7 +41,7 @@ class ArbitraryTypeReaderSpec extends Spec { def is = s2"""
     import Ficus.stringValueReader
     import ArbitraryTypeReader._
     val cfg = ConfigFactory.parseString(s"simple { foo2 = ${foo2.asConfigValue} }")
-    val instance: WithSimpleCompanionApply = arbitraryTypeValueReader[WithSimpleCompanionApply].read(cfg.getConfig("simple"), ".")
+    val instance: WithSimpleCompanionApply = arbitraryTypeValueReader[WithSimpleCompanionApply].value.read(cfg.getConfig("simple"), ".")
     instance.foo must_== foo2
   }
 
@@ -49,7 +49,7 @@ class ArbitraryTypeReaderSpec extends Spec { def is = s2"""
     import Ficus.stringValueReader
     import ArbitraryTypeReader._
     val cfg = ConfigFactory.parseString(s"singleParam { foo = ${foo.asConfigValue} }")
-    val instance: ClassWithSingleParam = arbitraryTypeValueReader[ClassWithSingleParam].read(cfg, "singleParam")
+    val instance: ClassWithSingleParam = arbitraryTypeValueReader[ClassWithSingleParam].value.read(cfg, "singleParam")
     instance.getFoo must_== foo
   }
 
@@ -62,7 +62,7 @@ class ArbitraryTypeReaderSpec extends Spec { def is = s2"""
         |  foo = ${foo.asConfigValue}
         |  bar = $bar
         |}""".stripMargin)
-    val instance: WithMultiCompanionApply = arbitraryTypeValueReader[WithMultiCompanionApply].read(cfg, "multi")
+    val instance: WithMultiCompanionApply = arbitraryTypeValueReader[WithMultiCompanionApply].value.read(cfg, "multi")
     (instance.foo must_== foo) and (instance.bar must_== bar)
   }
 
@@ -75,7 +75,7 @@ class ArbitraryTypeReaderSpec extends Spec { def is = s2"""
         |  foo = ${foo.asConfigValue}
         |  bar = $bar
         |}""".stripMargin)
-    val instance: ClassWithMultipleParams = arbitraryTypeValueReader[ClassWithMultipleParams].read(cfg, "multi")
+    val instance: ClassWithMultipleParams = arbitraryTypeValueReader[ClassWithMultipleParams].value.read(cfg, "multi")
     (instance.foo must_== foo) and (instance.bar must_== bar)
   }
 
@@ -83,7 +83,7 @@ class ArbitraryTypeReaderSpec extends Spec { def is = s2"""
     import Ficus.stringValueReader
     import ArbitraryTypeReader._
     val cfg = ConfigFactory.parseString(s"withMultipleApply { foo = ${foo.asConfigValue} }")
-    val instance: WithMultipleApplyMethods = arbitraryTypeValueReader[WithMultipleApplyMethods].read(cfg, "withMultipleApply")
+    val instance: WithMultipleApplyMethods = arbitraryTypeValueReader[WithMultipleApplyMethods].value.read(cfg, "withMultipleApply")
     instance.foo must_== foo
   }
 
@@ -91,7 +91,7 @@ class ArbitraryTypeReaderSpec extends Spec { def is = s2"""
     import Ficus.stringValueReader
     import ArbitraryTypeReader._
     val cfg = ConfigFactory.parseString(s"withMultipleConstructors { foo = ${foo.asConfigValue} }")
-    val instance: ClassWithMultipleConstructors = arbitraryTypeValueReader[ClassWithMultipleConstructors].read(cfg, "withMultipleConstructors")
+    val instance: ClassWithMultipleConstructors = arbitraryTypeValueReader[ClassWithMultipleConstructors].value.read(cfg, "withMultipleConstructors")
     instance.foo must_== foo
   }
 
@@ -99,49 +99,49 @@ class ArbitraryTypeReaderSpec extends Spec { def is = s2"""
     import Ficus.{optionValueReader, stringValueReader}
     import ArbitraryTypeReader._
     val cfg = ConfigFactory.parseString("withDefault { }")
-    arbitraryTypeValueReader[WithDefault].read(cfg, "withDefault").foo must_== "defaultFoo"
+    arbitraryTypeValueReader[WithDefault].value.read(cfg, "withDefault").foo must_== "defaultFoo"
   }
 
   def fallBackToApplyMethodDefaultValueNoKey = {
     import Ficus.{optionValueReader, stringValueReader}
     import ArbitraryTypeReader._
     val cfg = ConfigFactory.parseString("")
-    arbitraryTypeValueReader[WithDefault].read(cfg, "withDefault").foo must_== "defaultFoo"
+    arbitraryTypeValueReader[WithDefault].value.read(cfg, "withDefault").foo must_== "defaultFoo"
   }
 
   def fallBackToConstructorDefaultValue = {
     import Ficus.{optionValueReader, stringValueReader}
     import ArbitraryTypeReader._
     val cfg = ConfigFactory.parseString("withDefault { }")
-    arbitraryTypeValueReader[ClassWithDefault].read(cfg, "withDefault").foo must_== "defaultFoo"
+    arbitraryTypeValueReader[ClassWithDefault].value.read(cfg, "withDefault").foo must_== "defaultFoo"
   }
 
   def fallBackToConstructorDefaultValueNoKey = {
     import Ficus.{optionValueReader, stringValueReader}
     import ArbitraryTypeReader._
     val cfg = ConfigFactory.parseString("")
-    arbitraryTypeValueReader[ClassWithDefault].read(cfg, "withDefault").foo must_== "defaultFoo"
+    arbitraryTypeValueReader[ClassWithDefault].value.read(cfg, "withDefault").foo must_== "defaultFoo"
   }
 
   def withOptionField = {
     import Ficus.{optionValueReader, stringValueReader}
     import ArbitraryTypeReader._
     val cfg = ConfigFactory.parseString("""withOption { option = "here" }""")
-    arbitraryTypeValueReader[WithOption].read(cfg, "withOption").option must_== Some("here")
+    arbitraryTypeValueReader[WithOption].value.read(cfg, "withOption").option must_== Some("here")
   }
 
   def ignoreApplyParamDefault = prop { foo: String =>
     import Ficus.{optionValueReader, stringValueReader}
     import ArbitraryTypeReader._
     val cfg = ConfigFactory.parseString(s"withDefault { foo = ${foo.asConfigValue} }")
-    arbitraryTypeValueReader[WithDefault].read(cfg, "withDefault").foo must_== foo
+    arbitraryTypeValueReader[WithDefault].value.read(cfg, "withDefault").foo must_== foo
   }
 
   def ignoreConstructorParamDefault = prop { foo: String =>
     import Ficus.{optionValueReader, stringValueReader}
     import ArbitraryTypeReader._
     val cfg = ConfigFactory.parseString(s"withDefault { foo = ${foo.asConfigValue} }")
-    arbitraryTypeValueReader[ClassWithDefault].read(cfg, "withDefault").foo must_== foo
+    arbitraryTypeValueReader[ClassWithDefault].value.read(cfg, "withDefault").foo must_== foo
   }
 
   def overrideOptionReaderForDefault = {
@@ -150,7 +150,7 @@ class ArbitraryTypeReaderSpec extends Spec { def is = s2"""
       if (s.isEmpty) None else Some(s)
     }
     val cfg = ConfigFactory.parseString("""withDefault { foo = "" }""")
-    arbitraryTypeValueReader[ClassWithDefault].read(cfg, "withDefault").foo must beEqualTo("defaultFoo")
+    arbitraryTypeValueReader[ClassWithDefault].value.read(cfg, "withDefault").foo must beEqualTo("defaultFoo")
   }
 
   def notChooseBetweenJavaConstructors = {
@@ -177,7 +177,7 @@ class ArbitraryTypeReaderSpec extends Spec { def is = s2"""
     }
 
     val cfg = ConfigFactory.parseString(s"singleParam { FOO = ${foo.asConfigValue} }")
-    val instance: ClassWithSingleParam = arbitraryTypeValueReader[ClassWithSingleParam].read(cfg, "singleParam")
+    val instance: ClassWithSingleParam = arbitraryTypeValueReader[ClassWithSingleParam].value.read(cfg, "singleParam")
     instance.getFoo must_== foo
   }
 }
@@ -269,7 +269,7 @@ object ArbitraryTypeReaderSpec {
   case class WithReaderInCompanion(foo: String)
 
   object WithReaderInCompanion {
-    implicit val reader: ValueReader[WithReaderInCompanion] = 
+    implicit val reader: ValueReader[WithReaderInCompanion] =
       ValueReader.relative(_ => WithReaderInCompanion("from-companion"))
   }
 

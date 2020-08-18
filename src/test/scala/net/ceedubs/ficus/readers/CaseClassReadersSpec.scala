@@ -2,6 +2,7 @@ package net.ceedubs.ficus
 package readers
 
 import com.typesafe.config.ConfigFactory
+import com.typesafe.config.Config
 import net.ceedubs.ficus.Ficus._
 import net.ceedubs.ficus.readers.ArbitraryTypeReader._
 import ConfigSerializerOps._
@@ -12,6 +13,13 @@ object CaseClassReadersSpec {
   case class WithOption(option: Option[String])
   case class WithNestedCaseClass(simple: SimpleCaseClass)
   case class ValueClass(int: Int) extends AnyVal
+  case class CompanionImplicit(value: Int)
+  object CompanionImplicit {
+    implicit val reader: ValueReader[CompanionImplicit] =
+      implicitly[ValueReader[Int]].map(CompanionImplicit.apply)
+  }
+  case class WithNestedCompanionImplicit(value: CompanionImplicit)
+
   case class WithNestedValueClass(valueClass: ValueClass)
   case class WithDefault(string: String = "bar")
   case class Foo(bool: Boolean, intOpt: Option[Int], withNestedCaseClass: WithNestedCaseClass,
@@ -30,6 +38,8 @@ class CaseClassReadersSpec extends Spec { def is = s2"""
     read a nested value class $nestedValueClass
     fall back to a default value $fallbackToDefault
     do a combination of these things $combination
+    allow providing custom reader in companion $companionImplicitTopLevel
+    allow providing custom reader in companion $nestedCompanionImplicit
   """
 
   import CaseClassReadersSpec._
@@ -87,13 +97,29 @@ class CaseClassReadersSpec extends Spec { def is = s2"""
     val cfg = ConfigFactory.parseString(
       s"""
         |withNestedValueClass {
-        |  valueClass {
+        |  valueClass = {
         |    int = $int
         |  }
         |}
       """.stripMargin)
     cfg.as[WithNestedValueClass]("withNestedValueClass") must_== WithNestedValueClass(
       valueClass = ValueClass(int = int))
+  }
+
+  def companionImplicitTopLevel = prop { int: Int =>
+    val cfg = ConfigFactory.parseString(s"value = $int ")
+    cfg.as[CompanionImplicit]("value") must_== CompanionImplicit(int)
+  }
+
+  def nestedCompanionImplicit = prop { int: Int =>
+    val cfg = ConfigFactory.parseString(
+      s"""
+        |withNestedCompanionImplicit {
+        |  value = $int
+        |}
+      """.stripMargin)
+    cfg.as[WithNestedCompanionImplicit]("withNestedCompanionImplicit") must_== WithNestedCompanionImplicit(
+      value = CompanionImplicit(value = int))
   }
 
   def fallbackToDefault = {
@@ -112,7 +138,7 @@ class CaseClassReadersSpec extends Spec { def is = s2"""
         |    }
         |  }
         |  withNestedValueClass = {
-        |    valueClass {
+        |    valueClass = {
         |      int = $valueClassInt
         |    }
         |  }
