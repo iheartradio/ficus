@@ -38,6 +38,14 @@ lazy val project = Project("project", file("."))
         }
       }
     },
+    unmanagedSourceDirectories in Test ++= {
+      (unmanagedSourceDirectories in Test).value.map { dir =>
+        CrossVersion.partialVersion(scalaVersion.value) match {
+          case Some((2, 13)) => file(dir.getPath ++ "-2.13+")
+          case _ =>  file(dir.getPath ++ "-2.13-")
+        }
+      }
+    },
     libraryDependencies ++= 
       (if (scalaVersion.value.startsWith("2.10"))
          Seq(
