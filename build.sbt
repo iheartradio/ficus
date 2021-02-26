@@ -13,7 +13,7 @@ lazy val project = Project("project", file("."))
     name := "ficus",
     description := "A Scala-friendly wrapper companion for Typesafe config",
     startYear := Some(2013),
-    scalaVersion := "2.12.8",
+    scalaVersion := "2.12.13",
     crossScalaVersions := Seq("2.10.7", "2.11.12", scalaVersion.value, "2.13.0"),
     scalacOptions ++= Seq(
       "-feature",
