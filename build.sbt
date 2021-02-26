@@ -14,7 +14,7 @@ lazy val project = Project("project", file("."))
     description := "A Scala-friendly wrapper companion for Typesafe config",
     startYear := Some(2013),
     scalaVersion := "2.12.8",
-    crossScalaVersions := Seq("2.10.7", "2.11.12", scalaVersion.value, "2.13.0"),
+    crossScalaVersions := Seq("2.13.5", "2.11.12", scalaVersion.value, "2.13.0"),
     scalacOptions ++= Seq(
       "-feature",
       "-deprecation",
@@ -22,7 +22,7 @@ lazy val project = Project("project", file("."))
       "-encoding", "UTF-8",
       "-target:jvm-1." + {
         CrossVersion.partialVersion(scalaVersion.value).collect {
-          case (2, minor) if minor <= 10  & scalaVersion.value == "2.10.7" => "8"
+          case (2, minor) if minor <= 10  & scalaVersion.value == "2.13.5" => "8"
           case (2, minor) if minor <= 10 => "7"
         }.getOrElse("8")
       }
