@@ -14,7 +14,7 @@ lazy val project = Project("project", file("."))
     description := "A Scala-friendly wrapper companion for Typesafe config",
     startYear := Some(2013),
     scalaVersion := "2.12.14",
-    crossScalaVersions := Seq("2.10.7", "2.11.12", scalaVersion.value, "2.13.0"),
+    crossScalaVersions := Seq("2.10.7", "2.11.12", scalaVersion.value, "2.13.6"),
     scalacOptions ++= Seq(
       "-feature",
       "-deprecation",
