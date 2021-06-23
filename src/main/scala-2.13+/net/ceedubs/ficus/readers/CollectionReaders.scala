@@ -20,7 +20,7 @@ trait CollectionReaders {
         val entryConfig = entry.atPath(DummyPathValue)
         builder += entryReader.read(entryConfig, DummyPathValue)
       }
-      builder.result
+      builder.result()
     }
   }
 

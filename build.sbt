@@ -14,7 +14,7 @@ lazy val project = Project("project", file("."))
     description := "A Scala-friendly wrapper companion for Typesafe config",
     startYear := Some(2013),
     scalaVersion := "2.12.14",
-    crossScalaVersions := Seq("2.10.7", "2.11.12", scalaVersion.value, "2.13.6"),
+    crossScalaVersions := Seq("2.10.7", "2.11.12", scalaVersion.value, "2.13.4"),
     scalacOptions ++= Seq(
       "-feature",
       "-deprecation",
@@ -35,6 +35,14 @@ lazy val project = Project("project", file("."))
         CrossVersion.partialVersion(scalaVersion.value) match {
           case Some((2, 13)) => file(dir.getPath ++ "-2.13+")
           case _             => file(dir.getPath ++ "-2.13-")
+        }
+      }
+    },
+    unmanagedSourceDirectories in Test ++= {
+      (unmanagedSourceDirectories in Test).value.map { dir =>
+        CrossVersion.partialVersion(scalaVersion.value) match {
+          case Some((2, 13)) => file(dir.getPath ++ "-2.13+")
+          case _ =>  file(dir.getPath ++ "-2.13-")
         }
       }
     },
