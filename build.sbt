@@ -56,7 +56,7 @@ lazy val project = Project("project", file("."))
            "org.specs2"     %% "specs2-core"       % "4.8.3" % Test,
            "org.specs2"     %% "specs2-scalacheck" % "4.8.3" % Test)) ++ 
          Seq(
-           "org.scalacheck" %% "scalacheck"        % "1.14.1" % Test,
+           "org.scalacheck" %% "scalacheck"        % "1.14.2" % Test,
            "com.chuusai"    %% "shapeless"         % "2.3.3"  % Test,
            "com.typesafe"   %  "config"            % "1.3.4",
            "org.scala-lang" %  "scala-reflect"     % scalaVersion.value % Provided,
