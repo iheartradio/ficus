@@ -7,14 +7,29 @@ lazy val gcTask = gc := {
   System gc()
 }
 
+ThisBuild / githubWorkflowBuild := Seq(
+  WorkflowStep.Sbt(List("mimaReportBinaryIssues")),
+  WorkflowStep.Sbt(List("clean")),
+  WorkflowStep.Sbt(List("coverage")),
+  WorkflowStep.Sbt(List("test"))
+)
+
+ThisBuild / githubWorkflowBuildPostamble ++= Seq(
+  WorkflowStep.Sbt(List("coverageReport")),
+  WorkflowStep.Sbt(List("coveralls"))
+)
+
+ThisBuild / githubWorkflowPublishTargetBranches := Seq()
+
+ThisBuild / scalaVersion := "2.12.14"
+ThisBuild / crossScalaVersions := Seq("2.10.7", "2.11.12", scalaVersion.value, "2.13.6")
+
 lazy val root = project.in(file("."))
   .settings(
     /* basic project info */
     name := "ficus",
     description := "A Scala-friendly wrapper companion for Typesafe config",
     startYear := Some(2013),
-    scalaVersion := "2.12.14",
-    crossScalaVersions := Seq("2.10.7", "2.11.12", scalaVersion.value, "2.13.6"),
     scalacOptions ++= Seq(
       "-feature",
       "-deprecation",
