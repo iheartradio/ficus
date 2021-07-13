@@ -17,12 +17,15 @@ trait EnumerationReader {
       }
 
       val value = config.getString(path)
-      enum.values.find(_.toString == value)
+      findEnumValue(enum, value)
         .getOrElse(throw new BadValue(config.origin(), path, value + " isn't a valid value for enum: " +
           "" + c.getCanonicalName + "; allowed values: " + enum.values.mkString(", ")))
         .asInstanceOf[T#Value]
     }
   }
+
+  protected def findEnumValue[T <: Enumeration](enum: T, configValue: String): Option[T#Value] =
+    enum.values.find(_.toString == configValue)
 }
 
 object EnumerationReader extends EnumerationReader
