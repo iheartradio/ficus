@@ -6,9 +6,8 @@ import com.typesafe.config.Config
 
 trait LocalDateReader {
   implicit val localDateReader: ValueReader[LocalDate] = new ValueReader[LocalDate] {
-    override def read(config: Config, path: String): LocalDate = {
+    override def read(config: Config, path: String): LocalDate =
       LocalDate.parse(config.getString(path))
-    }
   }
 }
 

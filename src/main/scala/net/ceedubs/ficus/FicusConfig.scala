@@ -13,7 +13,8 @@ trait FicusConfig {
 
   def getAs[A](path: String)(implicit reader: ValueReader[Option[A]]): Option[A] = reader.read(config, path)
 
-  def getOrElse[A](path: String, default: => A)(implicit reader: ValueReader[Option[A]]): A = getAs[A](path).getOrElse(default)
+  def getOrElse[A](path: String, default: => A)(implicit reader: ValueReader[Option[A]]): A =
+    getAs[A](path).getOrElse(default)
 
   def apply[A](key: ConfigKey[A])(implicit reader: ValueReader[A]): A = as[A](key.path)
 }
@@ -22,7 +23,8 @@ final case class SimpleFicusConfig(config: Config) extends FicusConfig
 
 @deprecated(
   "For implicits, use Ficus._ instead of FicusConfig._. Separately use ArbitraryTypeReader._ for macro-based derived reader instances. See https://github.com/ceedubs/ficus/issues/5",
-  since = "1.0.1/1.1.1")
+  since = "1.0.1/1.1.1"
+)
 object FicusConfig extends AllValueReaderInstances {
   implicit def toFicusConfig(config: Config): FicusConfig = SimpleFicusConfig(config)
 }

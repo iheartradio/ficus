@@ -5,7 +5,8 @@ import net.ceedubs.ficus.Spec
 import org.scalacheck.Prop
 import scala.util.Failure
 
-class TryReaderSpec extends Spec with TryReader with AnyValReaders { def is = s2"""
+class TryReaderSpec extends Spec with TryReader with AnyValReaders {
+  def is = s2"""
   A try value reader should
     return a success when a value can be read $successWhenPresent
     return a failure when a value cannot be read $cannotBeRead
@@ -24,7 +25,7 @@ class TryReaderSpec extends Spec with TryReader with AnyValReaders { def is = s2
   }
 
   def unexpectedExceptionType = {
-    val cfg = ConfigFactory.parseString("myValue = true")
+    val cfg                                             = ConfigFactory.parseString("myValue = true")
     implicit val stringValueReader: ValueReader[String] = new ValueReader[String] {
       def read(config: Config, path: String): String = throw new NullPointerException("oops")
     }
@@ -32,11 +33,11 @@ class TryReaderSpec extends Spec with TryReader with AnyValReaders { def is = s2
   }
 
   def unexpectedException = prop { up: Throwable =>
-    val cfg = ConfigFactory.parseString("myValue = true")
+    val cfg                                             = ConfigFactory.parseString("myValue = true")
     implicit val stringValueReader: ValueReader[String] = new ValueReader[String] {
       def read(config: Config, path: String): String = throw up
     }
-    val expectedMessage = Option(up).map(_.getMessage).orNull
+    val expectedMessage                                 = Option(up).map(_.getMessage).orNull
     tryValueReader[String].read(cfg, "myValue") must beFailedTry[String] and
       (up.getMessage == expectedMessage must beTrue)
   }

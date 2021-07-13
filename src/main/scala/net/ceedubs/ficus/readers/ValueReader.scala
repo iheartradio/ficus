@@ -8,10 +8,9 @@ trait ValueReader[A] { self =>
   /** Reads the value at the path `path` in the Config */
   def read(config: Config, path: String): A
 
-  /**
-   * Turns a ValueReader[A] into a ValueReader[B] by applying the provided transformation `f` on the item of type A
-   * that is read from config
-   */
+  /** Turns a ValueReader[A] into a ValueReader[B] by applying the provided transformation `f` on the item of type A
+    * that is read from config
+    */
   def map[B](f: A => B): ValueReader[B] = new ValueReader[B] {
     def read(config: Config, path: String): B = f(self.read(config, path))
   }

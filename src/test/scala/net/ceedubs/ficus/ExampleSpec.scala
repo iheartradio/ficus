@@ -20,8 +20,7 @@ object Country extends Enumeration {
 class ExampleSpec extends Specification {
 
   // an example config snippet for us to work with
-  val config = ConfigFactory.parseString(
-    """
+  val config = ConfigFactory.parseString("""
       |services {
       |  users {
       |    urls = ["localhost:8001"]
@@ -43,7 +42,7 @@ class ExampleSpec extends Specification {
       userServiceConfig.as[Int]("maxConnections") must beEqualTo(100)
       userServiceConfig.as[Option[Boolean]]("httpsRequired") must beSome(true)
 
-      val analyticsServiceConfig = config.as[Config]("services.analytics")
+      val analyticsServiceConfig        = config.as[Config]("services.analytics")
       analyticsServiceConfig.as[List[String]]("urls") must beEqualTo(List("localhost:8002", "localhost:8003"))
       val analyticsServiceRequiresHttps = analyticsServiceConfig.as[Option[Boolean]]("httpsRequired") getOrElse false
       analyticsServiceRequiresHttps must beFalse
@@ -80,7 +79,7 @@ class ExampleSpec extends Specification {
 
       val userServiceConfig: ServiceConfig = servicesConfig.as[ServiceConfig]("users")
 
-      val servicesMap = config.as[Map[String,ServiceConfig]]("services")
+      val servicesMap = config.as[Map[String, ServiceConfig]]("services")
       servicesMap must beEqualTo(Map("users" -> userServiceConfig, "analytics" -> analyticsServiceConfig))
     }
   }

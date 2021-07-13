@@ -15,7 +15,7 @@ class Issue82Spec extends Specification {
 
     """should not assign "foo-bar" to "foo"""" in {
       case class TestSettings(val `foo-bar`: String, `foo`: String)
-      val config = ConfigFactory.parseString("""{ foo-bar: "foo-bar", foo: "foo" }""")
+      val config   = ConfigFactory.parseString("""{ foo-bar: "foo-bar", foo: "foo" }""")
       val settings = config.as[TestSettings]
       (settings.`foo-bar` mustEqual "foo-bar") and (settings.`foo` mustEqual "foo")
     }

@@ -4,7 +4,8 @@ package readers
 import com.typesafe.config.ConfigFactory
 import ConfigSerializerOps._
 
-class SymbolReaderSpec extends Spec with SymbolReader { def is = s2"""
+class SymbolReaderSpec extends Spec with SymbolReader {
+  def is = s2"""
   The Symbol value reader should
     read a Symbol $readSymbol
   """

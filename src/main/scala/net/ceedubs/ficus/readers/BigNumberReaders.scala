@@ -8,10 +8,10 @@ trait BigNumberReaders {
   implicit val bigDecimalReader: ValueReader[BigDecimal] = new ValueReader[BigDecimal] {
     def read(config: Config, path: String): BigDecimal = {
       val s = config.getString(path)
-      try {
-        BigDecimal(s)
-      } catch {
-        case e: NumberFormatException => throw new ConfigException.WrongType(config.origin(),path,"scala.math.BigDecimal","String",e)
+      try BigDecimal(s)
+      catch {
+        case e: NumberFormatException =>
+          throw new ConfigException.WrongType(config.origin(), path, "scala.math.BigDecimal", "String", e)
       }
     }
   }
@@ -19,10 +19,10 @@ trait BigNumberReaders {
   implicit val bigIntReader: ValueReader[BigInt] = new ValueReader[BigInt] {
     def read(config: Config, path: String): BigInt = {
       val s = config.getString(path)
-      try {
-        BigInt(s)
-      } catch {
-        case e: NumberFormatException => throw new ConfigException.WrongType(config.origin(),path,"scala.math.BigInt","String",e)
+      try BigInt(s)
+      catch {
+        case e: NumberFormatException =>
+          throw new ConfigException.WrongType(config.origin(), path, "scala.math.BigInt", "String", e)
       }
     }
   }

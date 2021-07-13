@@ -4,7 +4,8 @@ package readers
 import com.typesafe.config.{Config, ConfigFactory}
 import Ficus._
 
-class ConfigReaderSpec extends Spec { def is = s2"""
+class ConfigReaderSpec extends Spec {
+  def is = s2"""
   The Config value reader should
     read a config $readConfig
     implicitly read a config $implicitlyReadConfig
@@ -14,8 +15,7 @@ class ConfigReaderSpec extends Spec { def is = s2"""
   """
 
   def readConfig = prop { i: Int =>
-    val cfg = ConfigFactory.parseString(
-      s"""
+    val cfg = ConfigFactory.parseString(s"""
         |myConfig {
         |  myValue = $i
         |}
@@ -24,8 +24,7 @@ class ConfigReaderSpec extends Spec { def is = s2"""
   }
 
   def implicitlyReadConfig = prop { i: Int =>
-    val cfg = ConfigFactory.parseString(
-      s"""
+    val cfg = ConfigFactory.parseString(s"""
         |myConfig {
         |  myValue = $i
         |}
@@ -34,8 +33,7 @@ class ConfigReaderSpec extends Spec { def is = s2"""
   }
 
   def readFicusConfig = prop { i: Int =>
-    val cfg = ConfigFactory.parseString(
-      s"""
+    val cfg = ConfigFactory.parseString(s"""
         |myConfig {
         |  myValue = $i
         |}
@@ -44,8 +42,7 @@ class ConfigReaderSpec extends Spec { def is = s2"""
   }
 
   def implicitlyReadFicusConfig = prop { i: Int =>
-    val cfg = ConfigFactory.parseString(
-      s"""
+    val cfg = ConfigFactory.parseString(s"""
         |myConfig {
         |  myValue = $i
         |}
@@ -54,8 +51,7 @@ class ConfigReaderSpec extends Spec { def is = s2"""
   }
 
   def implicitlyReadFicusConfigFromSelf = prop { i: Int =>
-    val cfg = ConfigFactory.parseString(
-      s"""
+    val cfg = ConfigFactory.parseString(s"""
         |myConfig {
         |  myValue = $i
         |}

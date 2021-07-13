@@ -20,33 +20,37 @@ object ConfigSerializer {
     s"[${elements.mkString(", ")}]"
   }
 
-  implicit val stringSerializer = apply[String](ConfigUtil.quoteString)
+  implicit val stringSerializer  = apply[String](ConfigUtil.quoteString)
   implicit val booleanSerializer = fromToString[Boolean]
-  implicit val intSerializer = fromToString[Int]
-  implicit val longSerializer = fromToString[Long]
-  implicit val doubleSerializer = fromToString[Double]
+  implicit val intSerializer     = fromToString[Int]
+  implicit val longSerializer    = fromToString[Long]
+  implicit val doubleSerializer  = fromToString[Double]
 
-  implicit def listSerializer[A : ConfigSerializer]: ConfigSerializer[List[A]] = apply[List[A]](serializeIterable)
-  implicit def serializerForSets[A : ConfigSerializer]: ConfigSerializer[Set[A]] = apply[Set[A]](serializeIterable)
-  implicit def indexedSeqSerializer[A : ConfigSerializer]: ConfigSerializer[IndexedSeq[A]] = apply[IndexedSeq[A]](serializeIterable)
-  implicit def vectorSerializer[A : ConfigSerializer]: ConfigSerializer[Vector[A]] = apply[Vector[A]](serializeIterable)
-  implicit def arraySerializer[A : ConfigSerializer]: ConfigSerializer[Array[A]] = apply[Array[A]] { array =>
+  implicit def listSerializer[A: ConfigSerializer]: ConfigSerializer[List[A]]             = apply[List[A]](serializeIterable)
+  implicit def serializerForSets[A: ConfigSerializer]: ConfigSerializer[Set[A]]           = apply[Set[A]](serializeIterable)
+  implicit def indexedSeqSerializer[A: ConfigSerializer]: ConfigSerializer[IndexedSeq[A]] =
+    apply[IndexedSeq[A]](serializeIterable)
+  implicit def vectorSerializer[A: ConfigSerializer]: ConfigSerializer[Vector[A]]         = apply[Vector[A]](serializeIterable)
+  implicit def arraySerializer[A: ConfigSerializer]: ConfigSerializer[Array[A]]           = apply[Array[A]] { array =>
     serializeIterable(array.toIterable)
   }
-  def iterableSerializer[A: ConfigSerializer]: ConfigSerializer[Iterable[A]] = apply[Iterable[A]](serializeIterable)
+  def iterableSerializer[A: ConfigSerializer]: ConfigSerializer[Iterable[A]]              = apply[Iterable[A]](serializeIterable)
 
-  implicit def stringKeyMapSerializer[A](implicit valueSerializer: ConfigSerializer[A]) = new ConfigSerializer[Map[String, A]] {
-    def serialize(map: Map[String, A]): String = {
-      val lines = map.toIterable.map(Function.tupled((key, value) => s"${stringSerializer.serialize(key)} = ${valueSerializer.serialize(value)}"))
-      s"{\n  ${lines.mkString("\n  ")}\n}"
+  implicit def stringKeyMapSerializer[A](implicit valueSerializer: ConfigSerializer[A]) =
+    new ConfigSerializer[Map[String, A]] {
+      def serialize(map: Map[String, A]): String = {
+        val lines = map.toIterable.map(
+          Function.tupled((key, value) => s"${stringSerializer.serialize(key)} = ${valueSerializer.serialize(value)}")
+        )
+        s"{\n  ${lines.mkString("\n  ")}\n}"
+      }
     }
-  }
 
 }
 
 final case class ConfigSerializerOps[A](a: A, serializer: ConfigSerializer[A]) {
-  def asConfigValue: String = serializer.serialize(a)
-  def toConfigValue : ConfigValue = ConfigFactory.parseString( s"dummy=$asConfigValue").root().get("dummy")
+  def asConfigValue: String      = serializer.serialize(a)
+  def toConfigValue: ConfigValue = ConfigFactory.parseString(s"dummy=$asConfigValue").root().get("dummy")
 }
 
 object ConfigSerializerOps {
