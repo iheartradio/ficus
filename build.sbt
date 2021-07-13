@@ -8,21 +8,34 @@ lazy val gcTask = gc := {
 }
 
 ThisBuild / githubWorkflowBuild := Seq(
-  WorkflowStep.Sbt(List("mimaReportBinaryIssues")),
-  WorkflowStep.Sbt(List("clean")),
-  WorkflowStep.Sbt(List("coverage")),
-  WorkflowStep.Sbt(List("test"))
+  WorkflowStep.Sbt(List("mimaReportBinaryIssues"),
+    name = Some("Report binary compatibility issues")),
+  WorkflowStep.Sbt(List("clean", "coverage","test"),
+    name = Some("Build project"))
 )
 
 ThisBuild / githubWorkflowBuildPostamble ++= Seq(
-  WorkflowStep.Sbt(List("coverageReport")),
-  WorkflowStep.Sbt(List("coveralls"))
+  // See https://github.com/scoverage/sbt-coveralls#github-actions-integration
+  WorkflowStep.Sbt(List("coverageReport", "coveralls"),
+    name = Some("Upload coverage data to Coveralls"),
+    env = Map(
+      "COVERALLS_REPO_TOKEN" -> "${{ secrets.GITHUB_TOKEN }}",
+      "COVERALLS_FLAG_NAME" -> "Scala ${{ matrix.scala }}"
+    )
+  )
 )
+
+// This is causing problems with env variables being passed in, see
+// https://github.com/sbt/sbt/issues/6468
+ThisBuild / githubWorkflowUseSbtThinClient := false
 
 ThisBuild / githubWorkflowPublishTargetBranches := Seq()
 
-ThisBuild / scalaVersion := "2.12.14"
-ThisBuild / crossScalaVersions := Seq("2.10.7", "2.11.12", scalaVersion.value, "2.13.6")
+ThisBuild / crossScalaVersions := Seq("2.10.7", "2.11.12", "2.13.6", "2.12.14")
+ThisBuild / scalaVersion := (ThisBuild / crossScalaVersions).value.last
+
+// Coveralls doesn't really work with Scala 2.10.7 so we are disabling it for CI
+ThisBuild / githubWorkflowScalaVersions -= "2.10.7"
 
 lazy val root = project.in(file("."))
   .settings(

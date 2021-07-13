@@ -22,7 +22,7 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest]
-        scala: [2.10.7, 2.11.12, 2.12.14, 2.13.6]
+        scala: [2.11.12, 2.13.6, 2.12.14]
         java: [adopt@1.8]
     runs-on: ${{ matrix.os }}
     steps:
@@ -49,16 +49,16 @@ jobs:
           key: ${{ runner.os }}-sbt-cache-v2-${{ hashFiles('**/*.sbt') }}-${{ hashFiles('project/build.properties') }}
 
       - name: Check that workflows are up to date
-        run: sbt --client '++${{ matrix.scala }}; githubWorkflowCheck'
+        run: sbt ++${{ matrix.scala }} githubWorkflowCheck
 
-      - run: sbt --client '++${{ matrix.scala }}; mimaReportBinaryIssues'
+      - name: Report binary compatibility issues
+        run: sbt ++${{ matrix.scala }} mimaReportBinaryIssues
 
-      - run: sbt --client '++${{ matrix.scala }}; clean'
+      - name: Build project
+        run: sbt ++${{ matrix.scala }} clean coverage test
 
-      - run: sbt --client '++${{ matrix.scala }}; coverage'
-
-      - run: sbt --client '++${{ matrix.scala }}; test'
-
-      - run: sbt --client '++${{ matrix.scala }}; coverageReport'
-
-      - run: sbt --client '++${{ matrix.scala }}; coveralls'
+      - name: Upload coverage data to Coveralls
+        env:
+          COVERALLS_REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          COVERALLS_FLAG_NAME: Scala ${{ matrix.scala }}
+        run: sbt ++${{ matrix.scala }} coverageReport coveralls
