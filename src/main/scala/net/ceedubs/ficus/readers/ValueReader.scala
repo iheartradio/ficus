@@ -8,16 +8,16 @@ trait ValueReader[A] { self =>
   /** Reads the value at the path `path` in the Config */
   def read(config: Config, path: String): A
 
-  /**
-   * Turns a ValueReader[A] into a ValueReader[B] by applying the provided transformation `f` on the item of type A
-   * that is read from config
-   */
+  /** Turns a ValueReader[A] into a ValueReader[B] by applying the provided transformation `f` on the item of type A
+    * that is read from config
+    */
   def map[B](f: A => B): ValueReader[B] = new ValueReader[B] {
     def read(config: Config, path: String): B = f(self.read(config, path))
   }
 }
 
 object ValueReader {
+  implicit def generatedReader[A](implicit generated: Generated[ValueReader[A]]): ValueReader[A] = generated.value
 
   /** Returns the implicit ValueReader[A] in scope.
     * `ValueReader[A]` is equivalent to `implicitly[ValueReader[A]]`

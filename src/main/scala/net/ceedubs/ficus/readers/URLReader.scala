@@ -8,9 +8,8 @@ trait URLReader {
   implicit val javaURLReader: ValueReader[URL] = new ValueReader[URL] {
     def read(config: Config, path: String): URL = {
       val s = config.getString(path)
-      try {
-        new URL(s)
-      } catch {
+      try new URL(s)
+      catch {
         case e: MalformedURLException =>
           throw new ConfigException.WrongType(config.origin(), path, "java.net.URL", "String", e)
       }

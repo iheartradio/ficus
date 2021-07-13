@@ -25,17 +25,17 @@ class BigNumberReadersSpec extends Spec with BigNumberReaders {
 
   def readDoubleAsBigDecimal = prop { d: Double =>
     val cfg = ConfigFactory.parseString(s"myValue = $d")
-    bigDecimalReader.read(cfg,"myValue") must beEqualTo(BigDecimal(d))
+    bigDecimalReader.read(cfg, "myValue") must beEqualTo(BigDecimal(d))
   }
 
-  def readLongAsBigDecimal = prop{ l: Long =>
+  def readLongAsBigDecimal = prop { l: Long =>
     val cfg = ConfigFactory.parseString(s"myValue = $l")
-    bigDecimalReader.read(cfg,"myValue") must beEqualTo(BigDecimal(l))
+    bigDecimalReader.read(cfg, "myValue") must beEqualTo(BigDecimal(l))
   }
 
-  def readIntAsBigDecimal = prop{ i: Int =>
+  def readIntAsBigDecimal = prop { i: Int =>
     val cfg = ConfigFactory.parseString(s"myValue = $i")
-    bigDecimalReader.read(cfg,"myValue") must beEqualTo(BigDecimal(i))
+    bigDecimalReader.read(cfg, "myValue") must beEqualTo(BigDecimal(i))
   }
 
   /*
@@ -52,16 +52,16 @@ class BigNumberReadersSpec extends Spec with BigNumberReaders {
       bigDecimalReader.read(cfg, "myValue") must beEqualTo(b)
     }
   }
-  */
+   */
 
-  def readBigDecimalAsStringBigDecimal = prop{ b: BigDecimal =>
+  def readBigDecimalAsStringBigDecimal = prop { b: BigDecimal =>
     scala.util.Try(BigDecimal(b.toString)).toOption.isDefined ==> {
       val cfg = ConfigFactory.parseString(s"myValue = ${b.toString}")
       bigDecimalReader.read(cfg, "myValue") must beEqualTo(BigDecimal(b.toString))
     }
   }
 
-  def readBigIntAsStringBigDecimal = prop{ b: BigInt =>
+  def readBigIntAsStringBigDecimal = prop { b: BigInt =>
     scala.util.Try(BigDecimal(b.toString)).toOption.isDefined ==> {
       val cfg = ConfigFactory.parseString(s"myValue = ${b.toString}")
       bigDecimalReader.read(cfg, "myValue") must beEqualTo(BigDecimal(b.toString))
@@ -70,11 +70,11 @@ class BigNumberReadersSpec extends Spec with BigNumberReaders {
 
   def readMalformedBigDecimal = {
     val malformedBigDecimal = "foo"
-    val cfg = ConfigFactory.parseString(s"myValue = ${"\"" + malformedBigDecimal + "\""}")
+    val cfg                 = ConfigFactory.parseString(s"myValue = ${"\"" + malformedBigDecimal + "\""}")
     bigDecimalReader.read(cfg, "myValue") must throwA[WrongType]
   }
 
-  def readBigIntAsBigDecimal = prop{ b: BigInt =>
+  def readBigIntAsBigDecimal = prop { b: BigInt =>
     scala.util.Try(BigDecimal(b)).toOption.isDefined ==> {
       val cfg = ConfigFactory.parseString(s"myValue = $b")
       bigDecimalReader.read(cfg, "myValue") must beEqualTo(BigDecimal(b))
@@ -83,22 +83,22 @@ class BigNumberReadersSpec extends Spec with BigNumberReaders {
 
   def readIntAsBigInt = prop { i: Int =>
     val cfg = ConfigFactory.parseString(s"myValue = $i")
-    bigIntReader.read(cfg,"myValue") must beEqualTo(BigInt(i))
+    bigIntReader.read(cfg, "myValue") must beEqualTo(BigInt(i))
   }
 
   def readLongAsBigInt = prop { l: Long =>
     val cfg = ConfigFactory.parseString(s"myValue = $l")
-    bigIntReader.read(cfg,"myValue") must beEqualTo(BigInt(l))
+    bigIntReader.read(cfg, "myValue") must beEqualTo(BigInt(l))
   }
 
-  def readBigIntAsBigInt = prop{ b: BigInt =>
+  def readBigIntAsBigInt = prop { b: BigInt =>
     scala.util.Try(BigInt(b.toString)).toOption.isDefined ==> {
       val cfg = ConfigFactory.parseString(s"myValue = $b")
       bigIntReader.read(cfg, "myValue") must beEqualTo(BigInt(b.toString))
     }
   }
 
-  def readBigIntAsStringBigInt = prop{ b: BigInt =>
+  def readBigIntAsStringBigInt = prop { b: BigInt =>
     scala.util.Try(BigInt(b.toString)).toOption.isDefined ==> {
       val cfg = ConfigFactory.parseString(s"myValue = ${b.toString}")
       bigIntReader.read(cfg, "myValue") must beEqualTo(BigInt(b.toString))
@@ -107,7 +107,7 @@ class BigNumberReadersSpec extends Spec with BigNumberReaders {
 
   def readMalformedBigInt = {
     val malformedBigInt = "foo"
-    val cfg = ConfigFactory.parseString(s"myValue = ${"\"" + malformedBigInt + "\""}")
+    val cfg             = ConfigFactory.parseString(s"myValue = ${"\"" + malformedBigInt + "\""}")
     bigIntReader.read(cfg, "myValue") must throwA[WrongType]
   }
 }

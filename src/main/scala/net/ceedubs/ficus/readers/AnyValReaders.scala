@@ -18,7 +18,7 @@ trait AnyValReaders {
   implicit val doubleValueReader: ValueReader[Double] = new ValueReader[Double] {
     def read(config: Config, path: String): Double = config.getDouble(path)
   }
-  
+
 }
 
 object AnyValReaders extends AnyValReaders

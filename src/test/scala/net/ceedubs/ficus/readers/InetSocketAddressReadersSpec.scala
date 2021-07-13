@@ -20,28 +20,28 @@ class InetSocketAddressReadersSpec extends Spec with InetSocketAddressReaders {
 
   def readValidNamedInetSocketAddress = {
     val inetSocketAddress = """localhost:65535"""
-    val cfg = ConfigFactory.parseString(s"myValue = ${"\"" + inetSocketAddress + "\""}")
+    val cfg               = ConfigFactory.parseString(s"myValue = ${"\"" + inetSocketAddress + "\""}")
     inetSocketAddressReader.read(cfg, "myValue") must beEqualTo(new InetSocketAddress("localhost", 65535))
   }
 
   def readValidRawInetSocketAddress = {
     val inetSocketAddress = """127.0.0.1:65535"""
-    val cfg = ConfigFactory.parseString(s"myValue = ${"\"" + inetSocketAddress + "\""}")
+    val cfg               = ConfigFactory.parseString(s"myValue = ${"\"" + inetSocketAddress + "\""}")
     inetSocketAddressReader.read(cfg, "myValue") must beEqualTo(new InetSocketAddress("127.0.0.1", 65535))
   }
 
   def readMalformedInetSocketAddress = {
     val malformedInetSocketAddress = """localhost123"""
-    val cfg = ConfigFactory.parseString(s"myValue = ${"\"" + malformedInetSocketAddress + "\""}")
+    val cfg                        = ConfigFactory.parseString(s"myValue = ${"\"" + malformedInetSocketAddress + "\""}")
     inetSocketAddressReader.read(cfg, "myValue") must throwA[WrongType]
   }
 
   def readValidInetSocketAddresses = {
     val inetSocketAddresses = """localhost:65535,localhost:80,localhost:443"""
-    val cfg = ConfigFactory.parseString(s"myValue = ${"\"" + inetSocketAddresses + "\""}")
+    val cfg                 = ConfigFactory.parseString(s"myValue = ${"\"" + inetSocketAddresses + "\""}")
     inetSocketAddressListReader.read(cfg, "myValue") must beEqualTo(
       List(
-      new InetSocketAddress("localhost", 65535),
+        new InetSocketAddress("localhost", 65535),
         new InetSocketAddress("localhost", 80),
         new InetSocketAddress("localhost", 443)
       )
@@ -50,7 +50,7 @@ class InetSocketAddressReadersSpec extends Spec with InetSocketAddressReaders {
 
   def readValidInetSocketAddressesWithWhiteSpace = {
     val inetSocketAddresses = """localhost: 65535, localhost: 80, localhost: 443"""
-    val cfg = ConfigFactory.parseString(s"myValue = ${"\"" + inetSocketAddresses + "\""}")
+    val cfg                 = ConfigFactory.parseString(s"myValue = ${"\"" + inetSocketAddresses + "\""}")
     inetSocketAddressListReader.read(cfg, "myValue") must beEqualTo(
       List(
         new InetSocketAddress("localhost", 65535),
@@ -62,13 +62,13 @@ class InetSocketAddressReadersSpec extends Spec with InetSocketAddressReaders {
 
   def readMalformedInetSocketAddresses = {
     val malformedInetSocketAddresses = """localhost:65535 + localhost:80"""
-    val cfg = ConfigFactory.parseString(s"myValue = ${"\"" + malformedInetSocketAddresses + "\""}")
+    val cfg                          = ConfigFactory.parseString(s"myValue = ${"\"" + malformedInetSocketAddresses + "\""}")
     inetSocketAddressListReader.read(cfg, "myValue") must throwA[WrongType]
   }
 
   def readSingleInetSocketAddress = {
     val inetSocketAddress = """localhost:65535"""
-    val cfg = ConfigFactory.parseString(s"myValue = ${"\"" + inetSocketAddress + "\""}")
+    val cfg               = ConfigFactory.parseString(s"myValue = ${"\"" + inetSocketAddress + "\""}")
     inetSocketAddressListReader.read(cfg, "myValue") must beEqualTo(
       List(new InetSocketAddress("localhost", 65535))
     )

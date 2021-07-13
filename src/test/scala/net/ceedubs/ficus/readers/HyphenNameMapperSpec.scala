@@ -25,11 +25,11 @@ class HyphenNameMapperSpec extends Spec with DataTables {
   }
 
   def hyphenateWithDigits =
-    "camelCased"               || "hyphenated"                      |>
-    "camelCasedName67"         !! "camel-cased-name-67"             |
-    "1144StartsWithA32422"     !! "1144-starts-with-a-32422"        |
-    "get13HTML42Snippets"      !! "get-13-html-42-snippets"         |
-    "thisOneIs13InThe43Middle" !! "this-one-is-13-in-the-43-middle" | {
-      (camelCased, hyphenated) => HyphenNameMapper.map(camelCased) must_== hyphenated
-    }
+    "camelCased" || "hyphenated" |>
+      "camelCasedName67" !! "camel-cased-name-67" |
+      "1144StartsWithA32422" !! "1144-starts-with-a-32422" |
+      "get13HTML42Snippets" !! "get-13-html-42-snippets" |
+      "thisOneIs13InThe43Middle" !! "this-one-is-13-in-the-43-middle" | { (camelCased, hyphenated) =>
+        HyphenNameMapper.map(camelCased) must_== hyphenated
+      }
 }

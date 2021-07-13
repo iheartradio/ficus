@@ -6,7 +6,8 @@ import EnumerationReadersSpec._
 
 import scala.reflect.ClassTag
 
-class EnumerationReadersSpec extends Spec with EnumerationReader { def is = s2"""
+class EnumerationReadersSpec extends Spec with EnumerationReader {
+  def is = s2"""
   An enumeration value reader should
     map a string value to its enumeration counterpart $successStringMapping
     map a int value to its enumeration counterpart $successIntMapping
@@ -16,31 +17,31 @@ class EnumerationReadersSpec extends Spec with EnumerationReader { def is = s2""
   """
 
   def successStringMapping = {
-    val cfg = ConfigFactory.parseString("myValue = SECOND")
+    val cfg               = ConfigFactory.parseString("myValue = SECOND")
     implicit val classTag = ClassTag[StringValueEnum.type](StringValueEnum.getClass)
     enumerationValueReader[StringValueEnum.type].read(cfg, "myValue") must be equalTo StringValueEnum.second
   }
 
   def successIntMapping = {
-    val cfg = ConfigFactory.parseString("myValue = second")
+    val cfg               = ConfigFactory.parseString("myValue = second")
     implicit val classTag = ClassTag[IntValueEnum.type](IntValueEnum.getClass)
     enumerationValueReader[IntValueEnum.type].read(cfg, "myValue") must be equalTo IntValueEnum.second
   }
 
   def invalidMapping = {
-    val cfg = ConfigFactory.parseString("myValue = fourth")
+    val cfg               = ConfigFactory.parseString("myValue = fourth")
     implicit val classTag = ClassTag[StringValueEnum.type](StringValueEnum.getClass)
     enumerationValueReader[StringValueEnum.type].read(cfg, "myValue") must throwA[ConfigException.BadValue]
   }
 
   def notInstantiable = {
-    val cfg = ConfigFactory.parseString("myValue = fourth")
+    val cfg               = ConfigFactory.parseString("myValue = fourth")
     implicit val classTag = ClassTag[InnerEnum.type](InnerEnum.getClass)
     enumerationValueReader[InnerEnum.type].read(cfg, "myValue") must throwA[ConfigException.Generic]
   }
 
   def notObject = {
-    val cfg = ConfigFactory.parseString("myValue = fourth")
+    val cfg               = ConfigFactory.parseString("myValue = fourth")
     implicit val classTag = ClassTag[NotObject](classOf[NotObject])
     enumerationValueReader[NotObject].read(cfg, "myValue") must throwA[ConfigException.Generic]
   }
@@ -51,11 +52,10 @@ class EnumerationReadersSpec extends Spec with EnumerationReader { def is = s2""
 object EnumerationReadersSpec {
 
   object StringValueEnum extends Enumeration {
-    val first = Value("FIRST")
+    val first  = Value("FIRST")
     val second = Value("SECOND")
-    val third = Value("THIRD")
+    val third  = Value("THIRD")
   }
-
 
   object IntValueEnum extends Enumeration {
     val first, second, third = Value

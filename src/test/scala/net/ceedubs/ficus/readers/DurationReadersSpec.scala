@@ -6,7 +6,8 @@ import com.typesafe.config.ConfigFactory
 import scala.concurrent.duration._
 import org.scalacheck.{Gen, Prop}
 
-class DurationReadersSpec extends Spec with DurationReaders { def is = s2"""
+class DurationReadersSpec extends Spec with DurationReaders {
+  def is = s2"""
   The finite duration reader should
     read a millisecond value ${readMillis(finiteDurationReader)}
     read a minute value ${readMinutes(finiteDurationReader)}
