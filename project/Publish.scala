@@ -1,14 +1,14 @@
-import com.typesafe.sbt.pgp.PgpKeys
-import sbt._, Keys._
+import sbt._
+import Keys._
+import com.jsuereth.sbtpgp.PgpKeys
 import sbtrelease.ReleasePlugin.autoImport._
 import sbtrelease.ReleaseStateTransformations._
-
 
 object Publish {
 
   pomExtra in Global := {
 
-      <developers>
+    <developers>
         <developer>
           <id>ceedubs</id>
           <name>Cody Allen</name>
@@ -22,27 +22,28 @@ object Publish {
       </developers>
   }
 
-
   val publishingSettings = Seq(
-
-    organization in ThisBuild := "com.iheart",
-    publishMavenStyle := true,
-    licenses := Seq("MIT" -> url("http://www.opensource.org/licenses/mit-license.html")),
-    homepage := Some(url("http://iheartradio.github.io/ficus")),
-    scmInfo := Some(ScmInfo(
-      url("https://github.com/iheartradio/ficus"),
-      "git@github.com:iheartradio/ficus.git",
-      Some("git@github.com:iheartradio/ficus.git"))),
-    pomIncludeRepository := { _ => false },
-    publishArtifact in Test := false,
-    publishTo := {
+    ThisBuild / organization      := "com.iheart",
+    publishMavenStyle             := true,
+    licenses                      := Seq("MIT" -> url("http://www.opensource.org/licenses/mit-license.html")),
+    homepage                      := Some(url("http://iheartradio.github.io/ficus")),
+    scmInfo                       := Some(
+      ScmInfo(
+        url("https://github.com/iheartradio/ficus"),
+        "git@github.com:iheartradio/ficus.git",
+        Some("git@github.com:iheartradio/ficus.git")
+      )
+    ),
+    pomIncludeRepository          := { _ => false },
+    Test / publishArtifact        := false,
+    publishTo                     := {
       val nexus = "https://oss.sonatype.org/"
       if (isSnapshot.value)
         Some("Snapshots" at nexus + "content/repositories/snapshots")
       else
         Some("Releases" at nexus + "service/local/staging/deploy/maven2")
-      },
-    pomExtra := (
+    },
+    pomExtra                      := (
       <developers>
         <developer>
           <id>ceedubs</id>
@@ -55,11 +56,10 @@ object Publish {
           <email>kailuo.wang@gmail.com</email>
         </developer>
       </developers>
-      ),
-    releaseCrossBuild := true,
+    ),
+    releaseCrossBuild             := true,
     releasePublishArtifactsAction := PgpKeys.publishSigned.value,
-
-    releaseProcess := Seq[ReleaseStep](
+    releaseProcess                := Seq[ReleaseStep](
       checkSnapshotDependencies,
       inquireVersions,
       runClean,
@@ -73,7 +73,6 @@ object Publish {
       ReleaseStep(action = Command.process("sonatypeReleaseAll", _)),
       pushChanges
     )
-
   )
 
   val settings = publishingSettings

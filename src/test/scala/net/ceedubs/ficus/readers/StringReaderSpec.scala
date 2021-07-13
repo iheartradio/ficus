@@ -5,7 +5,8 @@ import com.typesafe.config.ConfigFactory
 import org.scalacheck.Prop
 import ConfigSerializerOps._
 
-class StringReaderSpec extends Spec with StringReader { def is = s2"""
+class StringReaderSpec extends Spec with StringReader {
+  def is = s2"""
   The String value reader should
     read a String $readString
   """

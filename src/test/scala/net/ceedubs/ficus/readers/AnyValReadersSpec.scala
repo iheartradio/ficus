@@ -3,7 +3,8 @@ package net.ceedubs.ficus.readers
 import com.typesafe.config.ConfigFactory
 import net.ceedubs.ficus.Spec
 
-class AnyValReadersSpec extends Spec with AnyValReaders { def is = s2"""
+class AnyValReadersSpec extends Spec with AnyValReaders {
+  def is = s2"""
   The Boolean value reader should
     read a boolean $readBoolean
 
@@ -29,7 +30,7 @@ class AnyValReadersSpec extends Spec with AnyValReaders { def is = s2"""
     val cfg = ConfigFactory.parseString(s"myValue = $i")
     intValueReader.read(cfg, "myValue") must beEqualTo(i)
   }
-  
+
   def readDoubleAsInt = prop { d: Double =>
     (d >= Int.MinValue && d <= Int.MaxValue) ==> {
       val cfg = ConfigFactory.parseString(s"myValue = $d")
@@ -41,7 +42,7 @@ class AnyValReadersSpec extends Spec with AnyValReaders { def is = s2"""
     val cfg = ConfigFactory.parseString(s"myValue = $l")
     longValueReader.read(cfg, "myValue") must beEqualTo(l)
   }
-  
+
   def readIntAsLong = prop { i: Int =>
     val cfg = ConfigFactory.parseString(s"myValue = $i")
     longValueReader.read(cfg, "myValue") must beEqualTo(i.toLong)
@@ -52,7 +53,7 @@ class AnyValReadersSpec extends Spec with AnyValReaders { def is = s2"""
     doubleValueReader.read(cfg, "myValue") must beEqualTo(d)
   }
 
- def readIntAsDouble = prop { i: Int =>
+  def readIntAsDouble = prop { i: Int =>
     val cfg = ConfigFactory.parseString(s"myValue = $i")
     doubleValueReader.read(cfg, "myValue") must beEqualTo(i.toDouble)
   }

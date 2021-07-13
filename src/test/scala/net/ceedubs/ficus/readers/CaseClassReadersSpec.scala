@@ -22,11 +22,16 @@ object CaseClassReadersSpec {
 
   case class WithNestedValueClass(valueClass: ValueClass)
   case class WithDefault(string: String = "bar")
-  case class Foo(bool: Boolean, intOpt: Option[Int], withNestedCaseClass: WithNestedCaseClass,
-                 withNestedValueClass: WithNestedValueClass)
+  case class Foo(
+      bool: Boolean,
+      intOpt: Option[Int],
+      withNestedCaseClass: WithNestedCaseClass,
+      withNestedValueClass: WithNestedValueClass
+  )
 }
 
-class CaseClassReadersSpec extends Spec { def is = s2"""
+class CaseClassReadersSpec extends Spec {
+  def is = s2"""
   A case class reader should
     be able to be used implicitly $useImplicitly
     hydrate a simple case class $hydrateSimpleCaseClass
@@ -60,8 +65,7 @@ class CaseClassReadersSpec extends Spec { def is = s2"""
   }
 
   def multipleFields = prop { (foo: String, long: Long) =>
-    val cfg = ConfigFactory.parseString(
-      s"""
+    val cfg = ConfigFactory.parseString(s"""
         |multipleFields {
         |  string = ${foo.asConfigValue}
         |  long = $long
@@ -76,16 +80,14 @@ class CaseClassReadersSpec extends Spec { def is = s2"""
   }
 
   def withNestedCaseClass = prop { bool: Boolean =>
-    val cfg = ConfigFactory.parseString(
-      s"""
+    val cfg = ConfigFactory.parseString(s"""
         |withNested {
         |  simple {
         |    bool = $bool
         |  }
         |}
       """.stripMargin)
-    cfg.as[WithNestedCaseClass]("withNested") must_== WithNestedCaseClass(
-      simple = SimpleCaseClass(bool = bool))
+    cfg.as[WithNestedCaseClass]("withNested") must_== WithNestedCaseClass(simple = SimpleCaseClass(bool = bool))
   }
 
   def topLevelValueClass = prop { int: Int =>
@@ -94,8 +96,7 @@ class CaseClassReadersSpec extends Spec { def is = s2"""
   }
 
   def nestedValueClass = prop { int: Int =>
-    val cfg = ConfigFactory.parseString(
-      s"""
+    val cfg = ConfigFactory.parseString(s"""
         |withNestedValueClass {
         |  valueClass = {
         |    int = $int
@@ -103,7 +104,8 @@ class CaseClassReadersSpec extends Spec { def is = s2"""
         |}
       """.stripMargin)
     cfg.as[WithNestedValueClass]("withNestedValueClass") must_== WithNestedValueClass(
-      valueClass = ValueClass(int = int))
+      valueClass = ValueClass(int = int)
+    )
   }
 
   def companionImplicitTopLevel = prop { int: Int =>
@@ -112,14 +114,14 @@ class CaseClassReadersSpec extends Spec { def is = s2"""
   }
 
   def nestedCompanionImplicit = prop { int: Int =>
-    val cfg = ConfigFactory.parseString(
-      s"""
+    val cfg = ConfigFactory.parseString(s"""
         |withNestedCompanionImplicit {
         |  value = $int
         |}
       """.stripMargin)
     cfg.as[WithNestedCompanionImplicit]("withNestedCompanionImplicit") must_== WithNestedCompanionImplicit(
-      value = CompanionImplicit(value = int))
+      value = CompanionImplicit(value = int)
+    )
   }
 
   def fallbackToDefault = {
@@ -128,8 +130,7 @@ class CaseClassReadersSpec extends Spec { def is = s2"""
   }
 
   def combination = prop { (fooBool: Boolean, simpleBool: Boolean, valueClassInt: Int) =>
-    val cfg = ConfigFactory.parseString(
-      s"""
+    val cfg = ConfigFactory.parseString(s"""
         |foo {
         |  bool = $fooBool
         |  withNestedCaseClass {

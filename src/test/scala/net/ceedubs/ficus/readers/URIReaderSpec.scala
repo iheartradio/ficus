@@ -21,7 +21,7 @@ class URIReaderSpec extends Spec with URIReaders {
 
   def readMalformedURI = {
     val malformedUri = """foo://{bar}.com"""
-    val cfg = ConfigFactory.parseString(s"myValue = ${"\"" + malformedUri + "\""}")
+    val cfg          = ConfigFactory.parseString(s"myValue = ${"\"" + malformedUri + "\""}")
     javaURIReader.read(cfg, "myValue") must throwA[WrongType]
   }
 }

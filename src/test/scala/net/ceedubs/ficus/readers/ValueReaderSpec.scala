@@ -4,15 +4,15 @@ package readers
 import com.typesafe.config.ConfigFactory
 import Ficus.intValueReader
 
-class ValueReaderSpec extends Spec { def is = s2"""
+class ValueReaderSpec extends Spec {
+  def is = s2"""
   A value reader should
     be able to be fetched from implicit scope via the companion apply method $fromCompanionApply
     be a functor $transformAsFunctor
   """
 
-  def fromCompanionApply = {
+  def fromCompanionApply =
     ValueReader[Int] must beEqualTo(implicitly[ValueReader[Int]])
-  }
 
   def transformAsFunctor = {
     val plusOneReader = ValueReader[Int].map(_ + 1)

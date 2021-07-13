@@ -22,7 +22,7 @@ class URLReaderSpec extends Spec with URLReader with TryReader {
 
   def readMalformedURL: MatchResult[Any] = {
     val malformedUrl = """foo://bar.com"""
-    val cfg = ConfigFactory.parseString(s"myValue = ${"\"" + malformedUrl + "\""}")
+    val cfg          = ConfigFactory.parseString(s"myValue = ${"\"" + malformedUrl + "\""}")
     javaURLReader.read(cfg, "myValue") must throwA[WrongType]
   }
 }
