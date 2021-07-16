@@ -21,6 +21,7 @@ trait FicusInstances
     with URIReaders
     with URLReader
     with InetSocketAddressReaders
+    with RangeReader
 
 object Ficus extends FicusInstances {
   implicit def toFicusConfig(config: Config): FicusConfig = SimpleFicusConfig(config)
