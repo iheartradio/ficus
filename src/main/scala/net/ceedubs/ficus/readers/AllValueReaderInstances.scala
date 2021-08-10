@@ -12,6 +12,7 @@ trait AllValueReaderInstances
     with TryReader
     with ConfigValueReader
     with PeriodReader
+    with ChronoUnitReader
     with LocalDateReader
 
 object AllValueReaderInstances extends AllValueReaderInstances
