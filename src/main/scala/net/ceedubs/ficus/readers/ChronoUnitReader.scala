@@ -9,7 +9,7 @@ trait ChronoUnitReader {
 
     /** Reads the value at the path `path` in the Config */
     override def read(config: Config, path: String): ChronoUnit =
-      ChronoUnit.valueOf(config.getString(path).toUpperCase)
+      ChronoUnit.valueOf(config.getString(path).toUpperCase.replace('-', '_'))
   }
 }
 
