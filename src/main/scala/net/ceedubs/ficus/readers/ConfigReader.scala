@@ -4,7 +4,7 @@ import com.typesafe.config.Config
 import net.ceedubs.ficus.{SimpleFicusConfig, FicusConfig}
 
 trait ConfigReader {
-  implicit val configValueReader: ValueReader[Config] = new ValueReader[Config] {
+  implicit val configValueReader: ValueReader[Config]           = new ValueReader[Config] {
     def read(config: Config, path: String): Config = if (path == ".") config else config.getConfig(path)
   }
 

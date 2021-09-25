@@ -16,7 +16,7 @@ trait BigNumberReaders {
     }
   }
 
-  implicit val bigIntReader: ValueReader[BigInt] = new ValueReader[BigInt] {
+  implicit val bigIntReader: ValueReader[BigInt]         = new ValueReader[BigInt] {
     def read(config: Config, path: String): BigInt = {
       val s = config.getString(path)
       try BigInt(s)

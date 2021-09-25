@@ -92,11 +92,11 @@ object CollectionReaderSpec {
     def builder = IndexedSeq.newBuilder[T]
   }
 
-  implicit def buildableVector[T]: Buildable[T, Vector[T]] = new Buildable[T, Vector[T]] {
+  implicit def buildableVector[T]: Buildable[T, Vector[T]]         = new Buildable[T, Vector[T]] {
     def builder = Vector.newBuilder[T]
   }
 
-  implicit def buildableIterable[T]: Buildable[T, Iterable[T]] = new Buildable[T, Iterable[T]] {
+  implicit def buildableIterable[T]: Buildable[T, Iterable[T]]     = new Buildable[T, Iterable[T]] {
     def builder = new mutable.ListBuffer[T]
   }
 }

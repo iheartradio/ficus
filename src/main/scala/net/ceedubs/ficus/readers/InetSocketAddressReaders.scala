@@ -15,7 +15,7 @@ trait InetSocketAddressReaders {
     }
   }
 
-  implicit val inetSocketAddressListReader: ValueReader[List[InetSocketAddress]] =
+  implicit val inetSocketAddressListReader: ValueReader[List[InetSocketAddress]]       =
     new ValueReader[List[InetSocketAddress]] {
       def read(config: Config, path: String): List[InetSocketAddress] =
         try config
@@ -34,7 +34,7 @@ trait InetSocketAddressReaders {
         }
     }
 
-  implicit val inetSocketAddressReader: ValueReader[InetSocketAddress] = new ValueReader[InetSocketAddress] {
+  implicit val inetSocketAddressReader: ValueReader[InetSocketAddress]                 = new ValueReader[InetSocketAddress] {
     def read(config: Config, path: String): InetSocketAddress =
       try parseHostAndPort(config.getString(path))
         .getOrElse(throw new IllegalArgumentException("Cannot parse string into host and port"))

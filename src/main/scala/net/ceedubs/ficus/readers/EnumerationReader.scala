@@ -7,7 +7,7 @@ import scala.reflect.ClassTag
 import scala.util.{Failure, Success, Try}
 
 trait EnumerationReader {
-  implicit def enumerationValueReader[T <: Enumeration: ClassTag]: ValueReader[T#Value] = new ValueReader[T#Value] {
+  implicit def enumerationValueReader[T <: Enumeration: ClassTag]: ValueReader[T#Value]        = new ValueReader[T#Value] {
     def read(config: Config, path: String): T#Value = {
       val c    = implicitly[ClassTag[T]].runtimeClass
       val enum = Try(c.getField("MODULE$")) match {

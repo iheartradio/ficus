@@ -20,11 +20,11 @@ object ConfigSerializer {
     s"[${elements.mkString(", ")}]"
   }
 
-  implicit val stringSerializer  = apply[String](ConfigUtil.quoteString)
-  implicit val booleanSerializer = fromToString[Boolean]
-  implicit val intSerializer     = fromToString[Int]
-  implicit val longSerializer    = fromToString[Long]
-  implicit val doubleSerializer  = fromToString[Double]
+  implicit val stringSerializer                                                                               = apply[String](ConfigUtil.quoteString)
+  implicit val booleanSerializer                                                                              = fromToString[Boolean]
+  implicit val intSerializer                                                                                  = fromToString[Int]
+  implicit val longSerializer                                                                                 = fromToString[Long]
+  implicit val doubleSerializer                                                                               = fromToString[Double]
 
   implicit def listSerializer[A: ConfigSerializer]: ConfigSerializer[List[A]]             = apply[List[A]](serializeIterable)
   implicit def serializerForSets[A: ConfigSerializer]: ConfigSerializer[Set[A]]           = apply[Set[A]](serializeIterable)
