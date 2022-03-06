@@ -22,7 +22,7 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest]
-        scala: [2.11.12, 2.13.6, 2.12.14]
+        scala: [2.11.12, 2.13.6, 2.12.14, 3.1.1]
         java: [adopt@1.8]
     runs-on: ${{ matrix.os }}
     steps:
@@ -55,9 +55,15 @@ jobs:
         run: sbt ++${{ matrix.scala }} mimaReportBinaryIssues
 
       - name: Build project
+        if: matrix.scala == '3.1.1'
+        run: sbt ++${{ matrix.scala }} clean test
+
+      - name: Build project
+        if: matrix.scala != '3.1.1'
         run: sbt ++${{ matrix.scala }} clean coverage test
 
       - name: Upload coverage data to Coveralls
+        if: matrix.scala != '3.1.1'
         env:
           COVERALLS_REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           COVERALLS_FLAG_NAME: Scala ${{ matrix.scala }}
