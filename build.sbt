@@ -110,7 +110,7 @@ lazy val root = project
          Seq("org.specs2" %% "specs2-core" % "4.8.3" % Test, "org.specs2" %% "specs2-scalacheck" % "4.8.3" % Test)
            .map(_ cross CrossVersion.for3Use2_13)) ++
         Seq(
-          "org.scalacheck" %% "scalacheck" % "1.14.1" % Test cross CrossVersion.for3Use2_13,
+          "org.scalacheck" %% "scalacheck" % "1.14.3" % Test cross CrossVersion.for3Use2_13,
           "com.typesafe"    % "config"     % "1.3.4"
         ) ++
         (if (Set("2.10", "2.11", "2.12").contains(scalaBinaryVersion.value))
