@@ -14,7 +14,7 @@ class ConfigReaderSpec extends Spec {
     implicitly read a ficus config itself $implicitlyReadFicusConfigFromSelf
   """
 
-  def readConfig = prop { i: Int =>
+  def readConfig = prop { (i: Int) =>
     val cfg = ConfigFactory.parseString(s"""
         |myConfig {
         |  myValue = $i
@@ -23,7 +23,7 @@ class ConfigReaderSpec extends Spec {
     configValueReader.read(cfg, "myConfig").getInt("myValue") must beEqualTo(i)
   }
 
-  def implicitlyReadConfig = prop { i: Int =>
+  def implicitlyReadConfig = prop { (i: Int) =>
     val cfg = ConfigFactory.parseString(s"""
         |myConfig {
         |  myValue = $i
@@ -32,7 +32,7 @@ class ConfigReaderSpec extends Spec {
     cfg.as[Config]("myConfig").getInt("myValue") must beEqualTo(i)
   }
 
-  def readFicusConfig = prop { i: Int =>
+  def readFicusConfig = prop { (i: Int) =>
     val cfg = ConfigFactory.parseString(s"""
         |myConfig {
         |  myValue = $i
@@ -41,7 +41,7 @@ class ConfigReaderSpec extends Spec {
     ficusConfigValueReader.read(cfg, "myConfig").as[Int]("myValue") must beEqualTo(i)
   }
 
-  def implicitlyReadFicusConfig = prop { i: Int =>
+  def implicitlyReadFicusConfig = prop { (i: Int) =>
     val cfg = ConfigFactory.parseString(s"""
         |myConfig {
         |  myValue = $i
@@ -50,7 +50,7 @@ class ConfigReaderSpec extends Spec {
     cfg.as[FicusConfig]("myConfig").as[Int]("myValue") must beEqualTo(i)
   }
 
-  def implicitlyReadFicusConfigFromSelf = prop { i: Int =>
+  def implicitlyReadFicusConfigFromSelf = prop { (i: Int) =>
     val cfg = ConfigFactory.parseString(s"""
         |myConfig {
         |  myValue = $i

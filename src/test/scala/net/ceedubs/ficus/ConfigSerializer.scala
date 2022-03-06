@@ -20,11 +20,11 @@ object ConfigSerializer {
     s"[${elements.mkString(", ")}]"
   }
 
-  implicit val stringSerializer  = apply[String](ConfigUtil.quoteString)
-  implicit val booleanSerializer = fromToString[Boolean]
-  implicit val intSerializer     = fromToString[Int]
-  implicit val longSerializer    = fromToString[Long]
-  implicit val doubleSerializer  = fromToString[Double]
+  implicit val stringSerializer: ConfigSerializer[String]   = apply[String](ConfigUtil.quoteString)
+  implicit val booleanSerializer: ConfigSerializer[Boolean] = fromToString[Boolean]
+  implicit val intSerializer: ConfigSerializer[Int]         = fromToString[Int]
+  implicit val longSerializer: ConfigSerializer[Long]       = fromToString[Long]
+  implicit val doubleSerializer: ConfigSerializer[Double]   = fromToString[Double]
 
   implicit def listSerializer[A: ConfigSerializer]: ConfigSerializer[List[A]]             = apply[List[A]](serializeIterable)
   implicit def serializerForSets[A: ConfigSerializer]: ConfigSerializer[Set[A]]           = apply[Set[A]](serializeIterable)
@@ -36,7 +36,9 @@ object ConfigSerializer {
   }
   def iterableSerializer[A: ConfigSerializer]: ConfigSerializer[Iterable[A]]              = apply[Iterable[A]](serializeIterable)
 
-  implicit def stringKeyMapSerializer[A](implicit valueSerializer: ConfigSerializer[A]) =
+  implicit def stringKeyMapSerializer[A](implicit
+      valueSerializer: ConfigSerializer[A]
+  ): ConfigSerializer[Map[String, A]] =
     new ConfigSerializer[Map[String, A]] {
       def serialize(map: Map[String, A]): String = {
         val lines = map.toIterable.map(

@@ -27,32 +27,32 @@ class EitherReadersSpec
     handle complex types $handleComplexTypes
     """
 
-  def readRightSideString = prop { a: String =>
+  def readRightSideString = prop { (a: String) =>
     val cfg = a.toConfigValue.atKey("x")
     eitherReader[String, String].read(cfg, "x") must beEqualTo(Right(a))
   }
 
-  def fallbackToLeftSideOnMissingKey = prop { a: String =>
+  def fallbackToLeftSideOnMissingKey = prop { (a: String) =>
     eitherReader[Option[String], String].read(ConfigFactory.empty(), "x") must beEqualTo(Left(None))
   }
 
-  def fallbackToLeftSideOnBadRightValue = prop { a: Int =>
+  def fallbackToLeftSideOnBadRightValue = prop { (a: Int) =>
     val badVal = a.toString + "xx"
     eitherReader[String, Int].read(badVal.toConfigValue.atKey("x"), "x") must beEqualTo(Left(badVal))
   }
 
-  def rightAndLeftFailure = prop { a: Int =>
+  def rightAndLeftFailure = prop { (a: Int) =>
     val badVal = a.toString + "xx"
     tryValueReader(eitherReader[Int, Int]).read(badVal.toConfigValue.atKey("x"), "x") must beAnInstanceOf[Failure[Int]]
   }
 
-  def rightSideTry = prop { a: Int =>
+  def rightSideTry = prop { (a: Int) =>
     val badVal = a.toString + "xx"
     eitherReader[Int, Try[Int]].read(a.toConfigValue.atKey("x"), "x") must beRight(a)
     eitherReader[Int, Try[Int]].read(badVal.toConfigValue.atKey("x"), "x") must beRight(beFailedTry[Int])
   }
 
-  def leftSideTry = prop { a: Int =>
+  def leftSideTry = prop { (a: Int) =>
     val badVal = a.toString + "xx"
     eitherReader[Try[String], Int].read(badVal.toConfigValue.atKey("x"), "x") must beLeft(
       beSuccessfulTry[String](badVal)

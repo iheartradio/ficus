@@ -22,12 +22,12 @@ class FicusConfigSpec extends Spec {
     cfg.as[Boolean]("myValue") must beTrue
   }
 
-  def readAValue = prop { b: Boolean =>
+  def readAValue = prop { (b: Boolean) =>
     val cfg = ConfigFactory.parseString(s"myValue = $b")
     cfg.as[Boolean]("myValue") must beEqualTo(b)
   }
 
-  def getAsSome = prop { b: Boolean =>
+  def getAsSome = prop { (b: Boolean) =>
     val cfg = ConfigFactory.parseString(s"myValue = $b")
     cfg.getAs[Boolean]("myValue") must beSome(b)
   }
@@ -60,7 +60,7 @@ class FicusConfigSpec extends Spec {
     cfg.getOrElse("myValue", default) must beEqualTo(124.toByte)
   }
 
-  def acceptAConfigKey = prop { b: Boolean =>
+  def acceptAConfigKey = prop { (b: Boolean) =>
     val cfg                     = ConfigFactory.parseString(s"myValue = $b")
     val key: ConfigKey[Boolean] = SimpleConfigKey("myValue")
     cfg(key) must beEqualTo(b)

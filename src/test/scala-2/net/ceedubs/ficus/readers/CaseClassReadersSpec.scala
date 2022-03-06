@@ -54,12 +54,12 @@ class CaseClassReadersSpec extends Spec {
     cfg.as[SimpleCaseClass]("simple") must_== SimpleCaseClass(bool = false)
   }
 
-  def hydrateSimpleCaseClass = prop { bool: Boolean =>
+  def hydrateSimpleCaseClass = prop { (bool: Boolean) =>
     val cfg = ConfigFactory.parseString(s"simple { bool = $bool }")
     cfg.as[SimpleCaseClass]("simple") must_== SimpleCaseClass(bool = bool)
   }
 
-  def hydrateSimpleCaseClassFromSelf = prop { bool: Boolean =>
+  def hydrateSimpleCaseClassFromSelf = prop { (bool: Boolean) =>
     val cfg = ConfigFactory.parseString(s"simple { bool = $bool }")
     cfg.getConfig("simple").as[SimpleCaseClass] must_== SimpleCaseClass(bool = bool)
   }
@@ -74,12 +74,12 @@ class CaseClassReadersSpec extends Spec {
     cfg.as[MultipleFields]("multipleFields") must_== MultipleFields(string = foo, long = long)
   }
 
-  def withOptionField = prop { s: String =>
+  def withOptionField = prop { (s: String) =>
     val cfg = ConfigFactory.parseString(s"""withOption { option = ${s.asConfigValue} }""")
     cfg.as[WithOption]("withOption") must_== WithOption(Some(s))
   }
 
-  def withNestedCaseClass = prop { bool: Boolean =>
+  def withNestedCaseClass = prop { (bool: Boolean) =>
     val cfg = ConfigFactory.parseString(s"""
         |withNested {
         |  simple {
@@ -90,12 +90,12 @@ class CaseClassReadersSpec extends Spec {
     cfg.as[WithNestedCaseClass]("withNested") must_== WithNestedCaseClass(simple = SimpleCaseClass(bool = bool))
   }
 
-  def topLevelValueClass = prop { int: Int =>
+  def topLevelValueClass = prop { (int: Int) =>
     val cfg = ConfigFactory.parseString(s"valueClass { int = $int }")
     cfg.as[ValueClass]("valueClass") must_== ValueClass(int)
   }
 
-  def nestedValueClass = prop { int: Int =>
+  def nestedValueClass = prop { (int: Int) =>
     val cfg = ConfigFactory.parseString(s"""
         |withNestedValueClass {
         |  valueClass = {
@@ -108,12 +108,12 @@ class CaseClassReadersSpec extends Spec {
     )
   }
 
-  def companionImplicitTopLevel = prop { int: Int =>
+  def companionImplicitTopLevel = prop { (int: Int) =>
     val cfg = ConfigFactory.parseString(s"value = $int ")
     cfg.as[CompanionImplicit]("value") must_== CompanionImplicit(int)
   }
 
-  def nestedCompanionImplicit = prop { int: Int =>
+  def nestedCompanionImplicit = prop { (int: Int) =>
     val cfg = ConfigFactory.parseString(s"""
         |withNestedCompanionImplicit {
         |  value = $int

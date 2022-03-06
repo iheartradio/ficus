@@ -10,7 +10,7 @@ class SymbolReaderSpec extends Spec with SymbolReader {
     read a Symbol $readSymbol
   """
 
-  def readSymbol = prop { string: String =>
+  def readSymbol = prop { (string: String) =>
     val cfg = ConfigFactory.parseString(s"myValue = ${string.asConfigValue}")
     symbolValueReader.read(cfg, "myValue") must beEqualTo(Symbol(string))
   }

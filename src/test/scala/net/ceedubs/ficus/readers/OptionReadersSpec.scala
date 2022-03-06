@@ -10,7 +10,7 @@ class OptionReadersSpec extends Spec with OptionReader with AnyValReaders {
     return a None for a non-existing value $optionNone
   """
 
-  def optionSome = prop { i: Int =>
+  def optionSome = prop { (i: Int) =>
     val cfg = ConfigFactory.parseString(s"myValue = $i")
     optionValueReader[Int].read(cfg, "myValue") must beSome(i)
   }

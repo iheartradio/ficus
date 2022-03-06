@@ -19,13 +19,13 @@ class EnumerationReadersSpec extends Spec with EnumerationReader {
   def successStringMapping = {
     val cfg               = ConfigFactory.parseString("myValue = SECOND")
     implicit val classTag = ClassTag[StringValueEnum.type](StringValueEnum.getClass)
-    enumerationValueReader[StringValueEnum.type].read(cfg, "myValue") must be equalTo StringValueEnum.second
+    enumerationValueReader[StringValueEnum.type].read(cfg, "myValue") must_== StringValueEnum.second
   }
 
   def successIntMapping = {
     val cfg               = ConfigFactory.parseString("myValue = second")
     implicit val classTag = ClassTag[IntValueEnum.type](IntValueEnum.getClass)
-    enumerationValueReader[IntValueEnum.type].read(cfg, "myValue") must be equalTo IntValueEnum.second
+    enumerationValueReader[IntValueEnum.type].read(cfg, "myValue") must_== IntValueEnum.second
   }
 
   def invalidMapping = {
