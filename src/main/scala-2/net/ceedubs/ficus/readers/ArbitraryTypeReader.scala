@@ -8,8 +8,6 @@ import scala.language.experimental.macros
 import scala.reflect.internal.{Definitions, StdNames, SymbolTable}
 import scala.reflect.macros.blackbox
 
-case class Generated[+A](value: A) extends AnyVal
-
 trait ArbitraryTypeReader {
   implicit def arbitraryTypeValueReader[T]: Generated[ValueReader[T]] =
     macro ArbitraryTypeReaderMacros.arbitraryTypeValueReader[T]

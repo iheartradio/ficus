@@ -18,6 +18,7 @@ trait FicusInstances
     with ISOZonedDateTimeReader
     with PeriodReader
     with LocalDateReader
+    with ChronoUnitReader
     with URIReaders
     with URLReader
     with InetSocketAddressReaders
