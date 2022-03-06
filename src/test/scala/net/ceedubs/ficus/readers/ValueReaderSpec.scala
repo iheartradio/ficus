@@ -16,7 +16,7 @@ class ValueReaderSpec extends Spec {
 
   def transformAsFunctor = {
     val plusOneReader = ValueReader[Int].map(_ + 1)
-    prop { i: Int =>
+    prop { (i: Int) =>
       val cfg = ConfigFactory.parseString(s"myValue = $i")
       plusOneReader.read(cfg, "myValue") must beEqualTo(i + 1)
     }

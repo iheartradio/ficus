@@ -55,6 +55,7 @@ lazy val root = project
     description                     := "A Scala-friendly wrapper companion for Typesafe config",
     startYear                       := Some(2013),
     scalacOptions ++= Seq(
+      "-language:implicitConversions",
       "-feature",
       "-deprecation",
       "-unchecked",
@@ -106,12 +107,12 @@ lazy val root = project
     libraryDependencies ++=
       (if (scalaVersion.value.startsWith("2.10"))
          Seq("org.specs2" %% "specs2-core" % "3.10.0" % Test, "org.specs2" %% "specs2-scalacheck" % "3.10.0" % Test)
-       else
+       else if (Set("2.11", "2.12", "2.13").contains(scalaBinaryVersion.value))
          Seq("org.specs2" %% "specs2-core" % "4.8.3" % Test, "org.specs2" %% "specs2-scalacheck" % "4.8.3" % Test)
-           .map(_ cross CrossVersion.for3Use2_13)) ++
+       else
+         Seq("org.specs2" %% "specs2-core" % "5.0.0" % Test, "org.specs2" %% "specs2-scalacheck" % "5.0.0" % Test)) ++
         Seq(
-          "org.scalacheck" %% "scalacheck" % "1.14.1" % Test cross CrossVersion.for3Use2_13,
-          "com.typesafe"    % "config"     % "1.3.4"
+          "com.typesafe" % "config" % "1.3.4"
         ) ++
         (if (Set("2.10", "2.11", "2.12").contains(scalaBinaryVersion.value))
            Seq(
@@ -134,13 +135,6 @@ lazy val root = project
       val ms = (Compile / packageBin / mappings).value
       ms filter { case (_, toPath) =>
         toPath != "application.conf"
-      }
-    },
-    Test / sources                  := {
-      if (scalaBinaryVersion.value == "3") {
-        Nil // TODO
-      } else {
-        (Test / sources).value
       }
     },
     Publish.settings,

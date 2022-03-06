@@ -11,7 +11,7 @@ class StringReaderSpec extends Spec with StringReader {
     read a String $readString
   """
 
-  def readString = prop { string: String =>
+  def readString = prop { (string: String) =>
     val cfg = ConfigFactory.parseString(s"myValue = ${string.asConfigValue}")
     stringValueReader.read(cfg, "myValue") must beEqualTo(string)
   }

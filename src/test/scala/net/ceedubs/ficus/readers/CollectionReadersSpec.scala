@@ -31,7 +31,7 @@ class CollectionReadersSpec extends Spec with CollectionReaders {
   }
 
   def readStringMap = {
-    def reads[A: Arbitrary: ValueReader: ConfigSerializer] = prop { map: Map[String, A] =>
+    def reads[A: Arbitrary: ValueReader: ConfigSerializer] = prop { (map: Map[String, A]) =>
       val cfg = ConfigFactory.parseString(s"myValue = ${map.asConfigValue}")
       mapValueReader[A].read(cfg, "myValue") must beEqualTo(map)
     }
@@ -70,7 +70,7 @@ class CollectionReadersSpec extends Spec with CollectionReaders {
   ) = {
 
     def reads[V](implicit arb: Arbitrary[C[V]], serializer: ConfigSerializer[C[V]], reader: ValueReader[C[V]]) =
-      prop { values: C[V] =>
+      prop { (values: C[V]) =>
         val cfg = ConfigFactory.parseString(s"myValue = ${values.asConfigValue}")
         reader.read(cfg, "myValue") must beEqualTo(values)
       }

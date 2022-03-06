@@ -15,9 +15,9 @@ class HyphenNameMapperNoDigitsSpec extends Spec with DataTables {
 
   def nonemptyStringListGen = nonEmptyListOf(alphaStr.suchThat(_.length > 1).map(_.toLowerCase))
 
-  implicit def nonemptyStringList = Arbitrary(nonemptyStringListGen)
+  implicit def nonemptyStringList: Arbitrary[List[String]] = Arbitrary(nonemptyStringListGen)
 
-  def hyphenateCorrectly = prop { foos: List[String] =>
+  def hyphenateCorrectly = prop { (foos: List[String]) =>
     val camelCased = (foos.head +: foos.tail.map(_.capitalize)).mkString
     val hyphenated = foos.mkString("-").toLowerCase
 

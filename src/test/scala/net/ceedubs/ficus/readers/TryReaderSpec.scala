@@ -14,7 +14,7 @@ class TryReaderSpec extends Spec with TryReader with AnyValReaders {
     handle an unexpected exception $unexpectedException
   """
 
-  def successWhenPresent = prop { i: Int =>
+  def successWhenPresent = prop { (i: Int) =>
     val cfg = ConfigFactory.parseString(s"myValue = $i")
     tryValueReader[Int].read(cfg, "myValue") must beSuccessfulTry[Int].withValue(i)
   }
@@ -32,7 +32,7 @@ class TryReaderSpec extends Spec with TryReader with AnyValReaders {
     tryValueReader[String].read(cfg, "myValue") must beFailedTry[String].withThrowable[NullPointerException]("oops")
   }
 
-  def unexpectedException = prop { up: Throwable =>
+  def unexpectedException = prop { (up: Throwable) =>
     val cfg                                             = ConfigFactory.parseString("myValue = true")
     implicit val stringValueReader: ValueReader[String] = new ValueReader[String] {
       def read(config: Config, path: String): String = throw up
