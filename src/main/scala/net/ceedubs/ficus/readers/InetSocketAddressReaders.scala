@@ -18,17 +18,19 @@ trait InetSocketAddressReaders {
   implicit val inetSocketAddressListReader: ValueReader[List[InetSocketAddress]] =
     new ValueReader[List[InetSocketAddress]] {
       def read(config: Config, path: String): List[InetSocketAddress] =
-        try config
-          .getString(path)
-          .split(", *")
-          .toList
-          .map(parseHostAndPort)
-          .partition(_.isEmpty) match {
-          case (errors, ok) if errors.isEmpty =>
-            ok.flatten
-          case _                              =>
-            throw new IllegalArgumentException("Cannot parse string into hosts and ports")
-        } catch {
+        try
+          config
+            .getString(path)
+            .split(", *")
+            .toList
+            .map(parseHostAndPort)
+            .partition(_.isEmpty) match {
+            case (errors, ok) if errors.isEmpty =>
+              ok.flatten
+            case _                              =>
+              throw new IllegalArgumentException("Cannot parse string into hosts and ports")
+          }
+        catch {
           case e: Exception =>
             throw new ConfigException.WrongType(config.origin(), path, "java.net.InetSocketAddress", "String", e)
         }
@@ -36,8 +38,9 @@ trait InetSocketAddressReaders {
 
   implicit val inetSocketAddressReader: ValueReader[InetSocketAddress] = new ValueReader[InetSocketAddress] {
     def read(config: Config, path: String): InetSocketAddress =
-      try parseHostAndPort(config.getString(path))
-        .getOrElse(throw new IllegalArgumentException("Cannot parse string into host and port"))
+      try
+        parseHostAndPort(config.getString(path))
+          .getOrElse(throw new IllegalArgumentException("Cannot parse string into host and port"))
       catch {
         case e: Exception =>
           throw new ConfigException.WrongType(config.origin(), path, "java.net.InetSocketAddress", "String", e)
