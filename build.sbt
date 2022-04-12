@@ -6,7 +6,7 @@ lazy val gcTask = gc := {
   System gc ()
 }
 
-def Scala3 = "3.1.1"
+def Scala3 = "3.1.2"
 
 ThisBuild / githubWorkflowBuild := Seq(
   WorkflowStep.Sbt(List("mimaReportBinaryIssues"), name = Some("Report binary compatibility issues")),
