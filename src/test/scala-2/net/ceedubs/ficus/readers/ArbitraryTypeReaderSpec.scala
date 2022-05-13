@@ -65,7 +65,7 @@ class ArbitraryTypeReaderSpec extends Spec {
         |  bar = $bar
         |}""".stripMargin)
     val instance: WithMultiCompanionApply = arbitraryTypeValueReader[WithMultiCompanionApply].value.read(cfg, "multi")
-    (instance.foo must_== foo) and (instance.bar must_== bar)
+    instance.foo must_== foo and (instance.bar must_== bar)
   }
 
   def instantiateMultiParamConstructor = prop { (foo: String, bar: Int) =>
@@ -77,7 +77,7 @@ class ArbitraryTypeReaderSpec extends Spec {
         |  bar = $bar
         |}""".stripMargin)
     val instance: ClassWithMultipleParams = arbitraryTypeValueReader[ClassWithMultipleParams].value.read(cfg, "multi")
-    (instance.foo must_== foo) and (instance.bar must_== bar)
+    instance.foo must_== foo and (instance.bar must_== bar)
   }
 
   def multipleApply = prop { (foo: String) =>

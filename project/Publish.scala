@@ -43,7 +43,7 @@ object Publish {
       else
         Some("Releases" at nexus + "service/local/staging/deploy/maven2")
     },
-    pomExtra                      := (
+    pomExtra                      :=
       <developers>
         <developer>
           <id>ceedubs</id>
@@ -55,8 +55,7 @@ object Publish {
           <name>Kailuo Wang</name>
           <email>kailuo.wang@gmail.com</email>
         </developer>
-      </developers>
-    ),
+      </developers>,
     releaseCrossBuild             := true,
     releasePublishArtifactsAction := PgpKeys.publishSigned.value,
     releaseProcess                := Seq[ReleaseStep](

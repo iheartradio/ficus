@@ -142,7 +142,7 @@ lazy val root = project
     mimaPreviousArtifacts           :=
       Version(version.value)
         .collect {
-          case Version(major, (minor :: bugfix :: _), _) if (scalaBinaryVersion.value != "2.10") && bugfix > 0 =>
+          case Version(major, (minor :: bugfix :: _), _) if scalaBinaryVersion.value != "2.10" && bugfix > 0 =>
             Set(organization.value %% name.value % Seq(major, minor, bugfix - 1).mkString("."))
         }
         .getOrElse(Set.empty),

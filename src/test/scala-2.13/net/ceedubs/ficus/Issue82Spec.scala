@@ -17,7 +17,7 @@ class Issue82Spec extends Specification {
       case class TestSettings(val `foo-bar`: String, `foo`: String)
       val config   = ConfigFactory.parseString("""{ foo-bar: "foo-bar", foo: "foo" }""")
       val settings = config.as[TestSettings]
-      (settings.`foo-bar` mustEqual "foo-bar") and (settings.`foo` mustEqual "foo")
+      settings.`foo-bar` mustEqual "foo-bar" and (settings.`foo` mustEqual "foo")
     }
   }
 }
