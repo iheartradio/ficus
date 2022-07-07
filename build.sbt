@@ -110,7 +110,7 @@ lazy val root = project
        else if (Set("2.11", "2.12", "2.13").contains(scalaBinaryVersion.value))
          Seq("org.specs2" %% "specs2-core" % "4.8.3" % Test, "org.specs2" %% "specs2-scalacheck" % "4.8.3" % Test)
        else
-         Seq("org.specs2" %% "specs2-core" % "5.0.0" % Test, "org.specs2" %% "specs2-scalacheck" % "5.0.0" % Test)) ++
+         Seq("org.specs2" %% "specs2-core" % "5.0.0" % Test, "org.specs2" %% "specs2-scalacheck" % "5.0.2" % Test)) ++
         Seq(
           "com.typesafe" % "config" % "1.3.4"
         ) ++
