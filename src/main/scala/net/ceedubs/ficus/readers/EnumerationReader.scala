@@ -35,7 +35,7 @@ trait EnumerationReader {
       }
     }
 
-  protected def findEnumValue[T <: Enumeration](`enum`: T, configValue: String): Option[EnumValue[T]] =
+  protected def findEnumValue[T <: Enumeration](`enum`: T, configValue: String): Option[`enum`.Value] =
     `enum`.values.find(_.toString == configValue)
 }
 
