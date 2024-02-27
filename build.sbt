@@ -41,7 +41,7 @@ ThisBuild / githubWorkflowUseSbtThinClient := false
 
 ThisBuild / githubWorkflowPublishTargetBranches := Seq()
 
-ThisBuild / crossScalaVersions := Seq("2.10.7", "2.11.12", "2.13.6", "2.12.14", Scala3)
+ThisBuild / crossScalaVersions := Seq("2.10.7", "2.11.12", "2.13.13", "2.12.14", Scala3)
 ThisBuild / scalaVersion       := (ThisBuild / crossScalaVersions).value.last
 
 // Coveralls doesn't really work with Scala 2.10.7 so we are disabling it for CI
